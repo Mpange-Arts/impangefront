@@ -1,0 +1,57 @@
+/* Hide everything by default on touch devices */
+@media (hover: none) {
+  .cursor-mouse,
+  .cursor-center-dot {
+    display: none;
+  }
+}
+
+/* ── Mouse body ── */
+.cursor-mouse {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 28px;
+  height: 42px;
+  background-color: #000;
+  border: 2.5px solid #fff;
+  border-radius: 14px;
+  pointer-events: none;
+  z-index: 9999;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 7px;
+}
+
+/* ── Green scroll indicator dot ── */
+.cursor-scroll-dot {
+  width: 4px;
+  height: 10px;
+  background-color: #4ade80;
+  border-radius: 999px;
+  animation: scrollBob 1.2s ease-in-out infinite;
+}
+
+@keyframes scrollBob {
+  0%   { transform: translateY(0px);  opacity: 1; }
+  50%  { transform: translateY(5px);  opacity: 0.5; }
+  100% { transform: translateY(0px);  opacity: 1; }
+}
+
+/* ── Invisible fast dot for precision tracking ── */
+.cursor-center-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  background: transparent;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
