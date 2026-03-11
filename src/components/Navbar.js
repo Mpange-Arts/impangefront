@@ -45,12 +45,9 @@ const Logo = styled.div`
     img { display: none; }
 
     a::after {
-      content: 'Mpange';
-      font-size: 0.85rem;
-      font-weight: 600;
+      content: '←';
+      font-size: 1.3rem;
       color: #fff;
-      letter-spacing: 0.05em;
-      text-transform: capitalize;
     }
   }
 `;
