@@ -29,10 +29,14 @@ const Logo = styled.div`
   }
 
   img {
-    height: 130px;
+    height: 150px;
     width: auto;
     object-fit: contain;
     display: block;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
   }
 `;
 
@@ -276,11 +280,17 @@ const LINKS = [
 function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
+    const onResize = () => setIsMobile(window.innerWidth <= 768);
     window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener('resize', onResize, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', onResize);
+    };
   }, []);
 
   useEffect(() => {
@@ -315,7 +325,7 @@ function Navbar() {
         </AnimatePresence>
 
         <AnimatePresence>
-          {(scrolled || window.innerWidth <= 768) && (
+          {(scrolled || isMobile) && (
             <HamburgerBtn
               onClick={() => setMenuOpen((o) => !o)}
               initial={{ opacity: 0, x: 12 }}
