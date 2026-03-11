@@ -71,7 +71,6 @@ const Wrapper = styled.div`
   user-select: none;
 `;
 
-// Full-bleed background
 const BgImage = styled(motion.div)`
   position: absolute;
   inset: 0;
@@ -85,7 +84,6 @@ const BgImage = styled(motion.div)`
     display: block;
   }
 
-  /* Dark overlay — heavier at bottom */
   &::after {
     content: '';
     position: absolute;
@@ -98,9 +96,6 @@ const BgImage = styled(motion.div)`
     );
   }
 `;
-
-// ── Central content column — same axis as reference ───────────
-// Sits center-left of the screen, all content aligned here
 
 const ContentColumn = styled.div`
   position: absolute;
@@ -122,7 +117,6 @@ const ContentColumn = styled.div`
   }
 `;
 
-// Progress bars
 const ProgressRow = styled.div`
   display: flex;
   gap: 5px;
@@ -146,7 +140,6 @@ const ProgressFill = styled.div`
   width: ${p => p.$pct * 100}%;
 `;
 
-// Badge — logo circle + label, sits directly below bars
 const Badge = styled(motion.div)`
   display: flex;
   align-items: center;
@@ -178,12 +171,10 @@ const BadgeLabel = styled.span`
   text-transform: none;
 `;
 
-// Spacer — pushes title + cta to lower portion, same axis
 const Spacer = styled.div`
   flex: 1;
 `;
 
-// Title block — bottom of the column
 const BottomContent = styled.div`
   padding-bottom: 12vh;
 `;
@@ -222,7 +213,6 @@ const Cta = styled(motion.a)`
   &:hover { color: #fff; }
 `;
 
-// Tap zones
 const TapZone = styled.div`
   position: absolute;
   top: 0;
@@ -275,11 +265,13 @@ const NewsStories = () => {
   const next = useCallback(() => goTo(current + 1,  1), [current, goTo]);
   const prev = useCallback(() => goTo(current - 1, -1), [current, goTo]);
 
+  // ── FIX: startRef resets to `now` each story so we never
+  //    read `progress` state inside the effect — clean deps.
   useEffect(() => {
     if (paused) { cancelAnimationFrame(rafRef.current); return; }
 
     const tick = (now) => {
-      if (!startRef.current) startRef.current = now - progress * STORY_DURATION;
+      if (!startRef.current) startRef.current = now;
       const pct = Math.min((now - startRef.current) / STORY_DURATION, 1);
       setProgress(pct);
       if (pct >= 1) { goTo(current + 1, 1); return; }
@@ -297,7 +289,7 @@ const NewsStories = () => {
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => { setPaused(false); startRef.current = null; }}
     >
-      {/* ── Full-bleed background ─────────────────────────── */}
+      {/* ── Background ───────────────────────────────────── */}
       <AnimatePresence custom={direction} mode="sync">
         <BgImage
           key={`bg-${current}`}
@@ -311,10 +303,9 @@ const NewsStories = () => {
         </BgImage>
       </AnimatePresence>
 
-      {/* ── Central content column ────────────────────────── */}
+      {/* ── Content column ───────────────────────────────── */}
       <ContentColumn>
 
-        {/* Progress bars */}
         <ProgressRow>
           {STORIES.map((_, i) => (
             <ProgressTrack key={i} onClick={() => goTo(i, i >= current ? 1 : -1)}>
@@ -325,7 +316,6 @@ const NewsStories = () => {
           ))}
         </ProgressRow>
 
-        {/* Badge — directly below bars, same left edge */}
         <AnimatePresence mode="wait">
           <Badge
             key={`badge-${current}`}
@@ -341,7 +331,6 @@ const NewsStories = () => {
 
         <Spacer />
 
-        {/* Title + CTA — lower portion, same axis */}
         <BottomContent>
           <AnimatePresence mode="wait">
             <Title
@@ -371,7 +360,7 @@ const NewsStories = () => {
 
       </ContentColumn>
 
-      {/* ── Tap zones ─────────────────────────────────────── */}
+      {/* ── Tap zones ────────────────────────────────────── */}
       <TapZone className="left"  onClick={prev} />
       <TapZone className="right" onClick={next} />
 

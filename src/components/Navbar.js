@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 
+// ── Import your logo ──────────────────────────────────────
+import logoSrc from "../assets/logo.png";
+
 // --- Styled Components ---
 
 const Nav = styled(motion.nav)`
@@ -10,7 +13,7 @@ const Nav = styled(motion.nav)`
   top: 0;
   left: 0;
   width: 100vw;
-  padding: 1.25em 1.5em;
+  padding: 0 3em;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -21,12 +24,15 @@ const Nav = styled(motion.nav)`
 
 const Logo = styled.div`
   a {
-    text-transform: capitalize;
-    font-size: 14px;
-    font-weight: bold;
-    color: #fff;
+    display: flex;
     text-decoration: none;
-    letter-spacing: 0.05em;
+  }
+
+  img {
+    height: 130px;
+    width: auto;
+    object-fit: contain;
+    display: block;
   }
 `;
 
@@ -69,25 +75,18 @@ const NavLinks = styled(motion.div)`
 
 // Hamburger button — appears on scroll
 const HamburgerBtn = styled(motion.button)`
-  background: rgba(255,255,255,0.08);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.15);
-  border-radius: 100px;
+  background: none;
+  border: none;
   color: #fff;
   cursor: pointer;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 18px;
+  padding: 0;
   font-size: 0.7rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   font-family: 'PP Neue Montreal', sans-serif;
-  transition: background 0.3s;
-
-  &:hover {
-    background: rgba(255,255,255,0.14);
-  }
 `;
 
 const BurgerIcon = styled.div`
@@ -146,11 +145,16 @@ const MenuTop = styled.div`
 
 const MenuLogo = styled.div`
   a {
-    text-transform: capitalize;
-    font-size: 14px;
-    font-weight: bold;
-    color: #fff;
+    display: flex;
+    align-items: center;
     text-decoration: none;
+  }
+
+  img {
+    height: 56px;
+    width: auto;
+    object-fit: contain;
+    display: block;
   }
 `;
 
@@ -279,7 +283,6 @@ function Navbar() {
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  // Lock body scroll when menu is open
   useEffect(() => {
     document.body.style.overflow = menuOpen ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -291,10 +294,11 @@ function Navbar() {
     <>
       <Nav scrolled={scrolled}>
         <Logo>
-          <Link to="/">Mpange</Link>
+          <Link to="/">
+            <img src={logoSrc} alt="Mpange" />
+          </Link>
         </Logo>
 
-        {/* Full nav links — fade out on scroll */}
         <AnimatePresence>
           {!scrolled && (
             <NavLinks
@@ -310,7 +314,6 @@ function Navbar() {
           )}
         </AnimatePresence>
 
-        {/* Hamburger — fades in on scroll, always visible on mobile */}
         <AnimatePresence>
           {(scrolled || window.innerWidth <= 768) && (
             <HamburgerBtn
@@ -331,7 +334,6 @@ function Navbar() {
         </AnimatePresence>
       </Nav>
 
-      {/* Full-screen menu */}
       <AnimatePresence>
         {menuOpen && (
           <MenuOverlay
@@ -340,10 +342,11 @@ function Navbar() {
             animate="visible"
             exit="exit"
           >
-            {/* Top bar inside menu */}
             <MenuTop>
               <MenuLogo>
-                <Link to="/" onClick={closeMenu}>Mpange</Link>
+                <Link to="/" onClick={closeMenu}>
+                  <img src={logoSrc} alt="Mpange" />
+                </Link>
               </MenuLogo>
               <HamburgerBtn onClick={closeMenu}>
                 <BurgerIcon open={true}>
@@ -355,7 +358,6 @@ function Navbar() {
               </HamburgerBtn>
             </MenuTop>
 
-            {/* Nav links */}
             <MenuLinks>
               {LINKS.map((l, i) => (
                 <MenuLinkItem key={l.to}>
@@ -375,7 +377,6 @@ function Navbar() {
               ))}
             </MenuLinks>
 
-            {/* Footer */}
             <MenuFooter
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}

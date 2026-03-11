@@ -1,6 +1,6 @@
-import React, { useState, useRef } from "react";
+import React, { useState} from "react";
 import styled from "styled-components";
-import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
+import { motion, AnimatePresence, } from "framer-motion";
 import heroBg from "../../assets/image/2.jpg";
 
 // ─── Styled ───────────────────────────────────────────────────
