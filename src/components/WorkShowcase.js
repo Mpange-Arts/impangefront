@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
-import ParallaxImage from './ParallaxImage';
 
 // --- Project Data ---
 const PROJECTS = [
