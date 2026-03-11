@@ -393,7 +393,7 @@ function Navbar() {
               transition={{ delay: 0.5, duration: 0.4 }}
             >
               <FooterTag>
-                <img src={starSrc} alt="" style={{ width: '12px', height: '12px', marginRight: '6px', verticalAlign: 'middle', opacity: 0.3 }} />
+                <img src={starSrc} alt="" style={{ width: '36px', height: '36px', marginRight: '6px', verticalAlign: 'middle', opacity: 0.3 }} />
                 Mpange Creative Arts
               </FooterTag>
               <FooterLinks>

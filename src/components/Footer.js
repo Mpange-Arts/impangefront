@@ -2,6 +2,16 @@ import React, { useRef } from 'react';
 import styled, { keyframes } from 'styled-components';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
+import starSrc from '../assets/star.svg';
+
+// ─── Reusable star image ─────────────────────────────────────
+const Star = () => (
+  <img
+    src={starSrc}
+    alt=""
+    style={{ width: '36px', height: '36px', display: 'inline-block', verticalAlign: 'middle', opacity: 0.5 }}
+  />
+);
 
 // ─── CTA Section ────────────────────────────────────────────────
 
@@ -42,7 +52,6 @@ const GhostText = styled.span`
   user-select: none;
 `;
 
-/* ── Realistic phone shell ── */
 const PhoneShell = styled(motion.div)`
   position: relative;
   z-index: 2;
@@ -61,34 +70,17 @@ const PhoneShell = styled(motion.div)`
   transform: rotate(-5deg);
 `;
 
-/* Side buttons */
 const SideBtn = styled.div`
   position: absolute;
   right: -3px;
   background: rgba(255, 255, 255, 0.08);
   border-radius: 2px;
 
-  &.vol-up {
-    top: 100px;
-    width: 3px;
-    height: 36px;
-  }
-
-  &.vol-down {
-    top: 148px;
-    width: 3px;
-    height: 36px;
-  }
-
-  &.power {
-    left: -3px;
-    top: 120px;
-    width: 3px;
-    height: 52px;
-  }
+  &.vol-up  { top: 100px; width: 3px; height: 36px; }
+  &.vol-down { top: 148px; width: 3px; height: 36px; }
+  &.power   { left: -3px; top: 120px; width: 3px; height: 52px; }
 `;
 
-/* Dynamic island / notch */
 const DynamicIsland = styled.div`
   width: 100px;
   height: 30px;
@@ -101,22 +93,14 @@ const DynamicIsland = styled.div`
   gap: 6px;
 
   .camera {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: #1a1a1a;
-    border: 1px solid rgba(255,255,255,0.08);
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #1a1a1a; border: 1px solid rgba(255,255,255,0.08);
   }
-
   .mic {
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: #1a1a1a;
+    width: 4px; height: 4px; border-radius: 50%; background: #1a1a1a;
   }
 `;
 
-/* Screen content */
 const PhoneScreen = styled.div`
   flex: 1;
   display: flex;
@@ -135,7 +119,6 @@ const CallTime = styled.span`
   margin-bottom: 20px;
 `;
 
-/* Pulsing ring around avatar */
 const pulse = keyframes`
   0%   { transform: scale(1);   opacity: 0.15; }
   70%  { transform: scale(1.5); opacity: 0; }
@@ -148,8 +131,7 @@ const AvatarRing = styled.div`
   height: 90px;
   margin-bottom: 20px;
 
-  &::before,
-  &::after {
+  &::before, &::after {
     content: '';
     position: absolute;
     inset: -12px;
@@ -157,10 +139,7 @@ const AvatarRing = styled.div`
     background: rgba(255, 255, 255, 0.15);
     animation: ${pulse} 2s ease-out infinite;
   }
-
-  &::after {
-    animation-delay: 0.6s;
-  }
+  &::after { animation-delay: 0.6s; }
 `;
 
 const Avatar = styled.div`
@@ -172,8 +151,6 @@ const Avatar = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2rem;
-  color: rgba(255, 255, 255, 0.5);
   position: relative;
   z-index: 1;
 `;
@@ -195,7 +172,6 @@ const CallerLabel = styled.span`
   margin-bottom: 28px;
 `;
 
-/* Wave bars */
 const wave = keyframes`
   0%, 100% { height: 4px; }
   50%       { height: 16px; }
@@ -227,7 +203,6 @@ const WaveBars = styled.div`
   }
 `;
 
-/* Action row */
 const ActionRow = styled.div`
   display: flex;
   gap: 20px;
@@ -241,8 +216,7 @@ const ActionBtn = styled.div`
   gap: 8px;
 
   .circle {
-    width: 52px;
-    height: 52px;
+    width: 52px; height: 52px;
     border-radius: 50%;
     background: ${p => p.decline ? 'rgba(220,60,60,0.18)' : 'rgba(255,255,255,0.07)'};
     border: 1px solid ${p => p.decline ? 'rgba(220,60,60,0.3)' : 'rgba(255,255,255,0.1)'};
@@ -250,8 +224,8 @@ const ActionBtn = styled.div`
     align-items: center;
     justify-content: center;
     font-size: 1.1rem;
-    transition: background 0.3s ease;
     cursor: pointer;
+    transition: background 0.3s ease;
 
     &:hover {
       background: ${p => p.decline ? 'rgba(220,60,60,0.28)' : 'rgba(255,255,255,0.12)'};
@@ -266,7 +240,6 @@ const ActionBtn = styled.div`
   }
 `;
 
-/* Home indicator */
 const HomeBar = styled.div`
   width: 120px;
   height: 4px;
@@ -275,8 +248,6 @@ const HomeBar = styled.div`
   margin: 16px auto 0;
   flex-shrink: 0;
 `;
-
-// ─── CTA Right ────────────────────────────────────────────────────
 
 const CTARight = styled.div`
   display: flex;
@@ -297,7 +268,9 @@ const CTAEyebrow = styled(motion.span)`
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.3);
-  display: block;
+  display: flex;
+  align-items: center;
+  gap: 7px;
   margin-bottom: 3vh;
 `;
 
@@ -559,12 +532,6 @@ const MarqueeItem = styled.span`
   display: flex;
   align-items: center;
   gap: 80px;
-
-  &::after {
-    content: '✦';
-    font-size: 0.6em;
-    color: rgba(255, 255, 255, 0.12);
-  }
 `;
 
 // ─── Animations ──────────────────────────────────────────────────
@@ -600,7 +567,6 @@ export const CallToAction = () => {
   return (
     <CTAWrapper ref={ref}>
 
-      {/* Left — phone mockup */}
       <CTALeft>
         <GhostText>Get In</GhostText>
 
@@ -609,23 +575,26 @@ export const CallToAction = () => {
           animate={inView ? { y: 0, opacity: 1 } : {}}
           transition={{ delay: 0.15, duration: 1.1, ease: [0.22, 1, 0.36, 1] }}
         >
-          {/* Side buttons */}
           <SideBtn className="vol-up" />
           <SideBtn className="vol-down" />
           <SideBtn className="power" />
 
-          {/* Dynamic island */}
           <DynamicIsland>
             <div className="camera" />
             <div className="mic" />
           </DynamicIsland>
 
-          {/* Screen */}
           <PhoneScreen>
             <CallTime>Incoming call</CallTime>
 
             <AvatarRing>
-              <Avatar>✦</Avatar>
+              <Avatar>
+                <img
+                  src={starSrc}
+                  alt=""
+                  style={{ width: '36px', height: '36px', opacity: 0.6 }}
+                />
+              </Avatar>
             </AvatarRing>
 
             <CallerName>Mpange Creative</CallerName>
@@ -652,13 +621,12 @@ export const CallToAction = () => {
         </PhoneShell>
       </CTALeft>
 
-      {/* Right — text */}
       <CTARight>
         <CTAEyebrow
           variants={fadeUp} custom={0}
           initial="hidden" animate={inView ? 'visible' : 'hidden'}
         >
-          ✦ Contact Us
+          <Star /> Contact Us
         </CTAEyebrow>
 
         <CTAHeadline>
@@ -708,7 +676,14 @@ export const Footer = () => {
           transition={{ repeat: Infinity, duration: 28, ease: 'linear' }}
         >
           {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
-            <MarqueeItem key={i}>{item}</MarqueeItem>
+            <MarqueeItem key={i}>
+              {item}
+              <img
+                src={starSrc}
+                alt=""
+                style={{ width: '36px', height: '36px', opacity: 0.2, verticalAlign: 'middle' }}
+              />
+            </MarqueeItem>
           ))}
         </MarqueeTrack>
       </FooterMarqueeRow>
