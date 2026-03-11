@@ -3,13 +3,14 @@ import styled, { keyframes } from 'styled-components';
 import { motion, useInView } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import starSrc from '../assets/star.svg';
+import logoSrc from '../assets/logo.png';
 
 // ─── Reusable star image ─────────────────────────────────────
 const Star = () => (
   <img
     src={starSrc}
     alt=""
-    style={{ width: '36px', height: '36px', display: 'inline-block', verticalAlign: 'middle', opacity: 0.5 }}
+    style={{ width: '20px', height: '20px', display: 'inline-block', verticalAlign: 'middle', opacity: 0.5 }}
   />
 );
 
@@ -388,12 +389,15 @@ const FooterBrand = styled.div`
 `;
 
 const FooterLogo = styled(Link)`
-  font-size: 1.1rem;
-  font-weight: 600;
-  color: #fff;
+  display: flex;
   text-decoration: none;
-  text-transform: capitalize;
-  letter-spacing: 0.02em;
+
+  img {
+    height: 100px;
+    width: auto;
+    object-fit: contain;
+    display: block;
+  }
 `;
 
 const FooterTagline = styled.p`
@@ -690,7 +694,7 @@ export const Footer = () => {
 
       <FooterTop>
         <FooterBrand>
-          <FooterLogo to="/">Mpange</FooterLogo>
+          <FooterLogo to="/"><img src={logoSrc} alt="Mpange" /></FooterLogo>
           <FooterTagline>
             A creative studio building cinematic brands, digital products, and bold visual identities.
           </FooterTagline>

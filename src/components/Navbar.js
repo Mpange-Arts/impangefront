@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { motion, AnimatePresence } from "framer-motion";
 
-// ── Import your logo ──────────────────────────────────────
 import logoSrc from "../assets/logo.png";
 import starSrc from "../assets/star.svg";
 
@@ -28,31 +27,38 @@ const Nav = styled(motion.nav)`
   }
 `;
 
+/* Desktop logo — hidden on mobile */
 const Logo = styled.div`
   a {
     display: flex;
     text-decoration: none;
   }
-
   img {
-    height: 150px;
+    height: 100px;
     width: auto;
     object-fit: contain;
     display: block;
   }
-
   @media (max-width: 768px) {
-    img { display: none; }
+    display: none;
+  }
+`;
 
-    a::after {
-      content: '←';
-      font-size: 1.3rem;
+/* Mobile back arrow — visible only on mobile, fades out on scroll */
+const BackArrow = styled(motion.div)`
+  display: none;
+  @media (max-width: 768px) {
+    display: flex;
+    align-items: center;
+    a {
+      font-size: 1.4rem;
       color: #fff;
+      text-decoration: none;
+      line-height: 1;
     }
   }
 `;
 
-// Full nav links — visible before scroll
 const NavLinks = styled(motion.div)`
   display: flex;
   gap: 1.5em;
@@ -78,10 +84,7 @@ const NavLinks = styled(motion.div)`
       transform-origin: center;
       transition: transform 0.3s ease;
     }
-
-    &:hover::after {
-      transform: scaleX(1);
-    }
+    &:hover::after { transform: scaleX(1); }
   }
 
   @media (max-width: 768px) {
@@ -89,7 +92,6 @@ const NavLinks = styled(motion.div)`
   }
 `;
 
-// Hamburger button — appears on scroll
 const HamburgerBtn = styled(motion.button)`
   background: none;
   border: none;
@@ -98,7 +100,7 @@ const HamburgerBtn = styled(motion.button)`
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 0;
+  padding: 8px;
   font-size: 0.7rem;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -135,7 +137,6 @@ const BurgerIcon = styled.div`
   }
 `;
 
-// Full-screen menu overlay
 const MenuOverlay = styled(motion.div)`
   position: fixed;
   inset: 0;
@@ -157,6 +158,7 @@ const MenuTop = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  z-index: 10;
 `;
 
 const MenuLogo = styled.div`
@@ -165,9 +167,8 @@ const MenuLogo = styled.div`
     align-items: center;
     text-decoration: none;
   }
-
   img {
-    height: 56px;
+    height: 100px;
     width: auto;
     object-fit: contain;
     display: block;
@@ -184,9 +185,7 @@ const MenuLinkItem = styled(motion.div)`
   overflow: hidden;
   border-bottom: 1px solid rgba(255,255,255,0.07);
 
-  &:first-child {
-    border-top: 1px solid rgba(255,255,255,0.07);
-  }
+  &:first-child { border-top: 1px solid rgba(255,255,255,0.07); }
 
   a {
     display: flex;
@@ -208,15 +207,8 @@ const MenuLinkItem = styled(motion.div)`
       transform: translateX(-10px);
       transition: opacity 0.3s, transform 0.3s;
     }
-
-    &:hover {
-      color: rgba(255,255,255,0.5);
-    }
-
-    &:hover .arrow {
-      opacity: 1;
-      transform: translateX(0);
-    }
+    &:hover { color: rgba(255,255,255,0.5); }
+    &:hover .arrow { opacity: 1; transform: translateX(0); }
   }
 `;
 
@@ -235,6 +227,9 @@ const FooterTag = styled.span`
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: rgba(255,255,255,0.3);
+  display: flex;
+  align-items: center;
+  gap: 6px;
 `;
 
 const FooterLinks = styled.div`
@@ -248,7 +243,6 @@ const FooterLinks = styled.div`
     color: rgba(255,255,255,0.35);
     text-decoration: none;
     transition: color 0.3s;
-
     &:hover { color: rgba(255,255,255,0.8); }
   }
 `;
@@ -281,18 +275,19 @@ const linkVariants = {
 };
 
 const LINKS = [
-  { to: '/work', label: 'Work' },
-  { to: '/studio', label: 'Studio' },
-  { to: '/news', label: 'News' },
+  { to: '/work',    label: 'Work' },
+  { to: '/studio',  label: 'Studio' },
+  { to: '/news',    label: 'News' },
   { to: '/contact', label: 'Contact' },
 ];
 
 // --- Component ---
 
 function Navbar() {
-  const [scrolled, setScrolled] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [scrolled, setScrolled]   = useState(false);
+  const [menuOpen, setMenuOpen]   = useState(false);
+  const [isMobile, setIsMobile]   = useState(window.innerWidth <= 768);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 60);
@@ -312,15 +307,36 @@ function Navbar() {
 
   const closeMenu = () => setMenuOpen(false);
 
+  // On mobile: close menu AND go home. On desktop: just close.
+  const handleCloseBtn = () => {
+    closeMenu();
+    if (isMobile) navigate('/');
+  };
+
   return (
     <>
       <Nav scrolled={scrolled}>
+
+        {/* Desktop only logo */}
         <Logo>
-          <Link to="/">
-            <img src={logoSrc} alt="Mpange" />
-          </Link>
+          <Link to="/"><img src={logoSrc} alt="Mpange" /></Link>
         </Logo>
 
+        {/* Mobile only back arrow — fades out on scroll */}
+        <AnimatePresence>
+          {!scrolled && (
+            <BackArrow
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <Link to="/">←</Link>
+            </BackArrow>
+          )}
+        </AnimatePresence>
+
+        {/* Desktop nav links */}
         <AnimatePresence>
           {!scrolled && (
             <NavLinks
@@ -336,25 +352,25 @@ function Navbar() {
           )}
         </AnimatePresence>
 
+        {/* Hamburger — desktop on scroll, always on mobile */}
         <AnimatePresence>
           {(scrolled || isMobile) && !menuOpen && (
             <HamburgerBtn
-              onClick={() => setMenuOpen((o) => !o)}
+              onClick={() => setMenuOpen(true)}
               initial={{ opacity: 0, x: 12 }}
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 12 }}
               transition={{ duration: 0.3 }}
             >
-              <BurgerIcon open={menuOpen}>
-                <span />
-                <span />
-                <span />
+              <BurgerIcon open={false}>
+                <span /><span /><span />
               </BurgerIcon>
             </HamburgerBtn>
           )}
         </AnimatePresence>
       </Nav>
 
+      {/* Full-screen menu */}
       <AnimatePresence>
         {menuOpen && (
           <MenuOverlay
@@ -369,11 +385,11 @@ function Navbar() {
                   <img src={logoSrc} alt="Mpange" />
                 </Link>
               </MenuLogo>
-              <HamburgerBtn onClick={closeMenu}>
+
+              {/* Close / back button */}
+              <HamburgerBtn onClick={handleCloseBtn}>
                 <BurgerIcon open={true}>
-                  <span />
-                  <span />
-                  <span />
+                  <span /><span /><span />
                 </BurgerIcon>
               </HamburgerBtn>
             </MenuTop>
@@ -404,12 +420,12 @@ function Navbar() {
               transition={{ delay: 0.5, duration: 0.4 }}
             >
               <FooterTag>
-                <img src={starSrc} alt="" style={{ width: '36px', height: '36px', marginRight: '6px', verticalAlign: 'middle', opacity: 0.3 }} />
+                <img src={starSrc} alt="" style={{ width: '36px', height: '36px', opacity: 0.3 }} />
                 Mpange Creative Arts
               </FooterTag>
               <FooterLinks>
-                <Link to="/work" onClick={closeMenu}>Instagram</Link>
-                <Link to="/work" onClick={closeMenu}>LinkedIn</Link>
+                <Link to="/work"    onClick={closeMenu}>Instagram</Link>
+                <Link to="/work"    onClick={closeMenu}>LinkedIn</Link>
                 <Link to="/contact" onClick={closeMenu}>Get in touch</Link>
               </FooterLinks>
             </MenuFooter>
