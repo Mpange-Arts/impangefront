@@ -21,6 +21,11 @@ const Nav = styled(motion.nav)`
   z-index: 100;
   transition: background 0.4s ease;
   background: ${(p) => (p.scrolled ? 'rgba(0,0,0,0.0)' : 'transparent')};
+
+  @media (max-width: 768px) {
+    min-height: 64px;
+    padding: 0 1.5em;
+  }
 `;
 
 const Logo = styled.div`
@@ -37,7 +42,16 @@ const Logo = styled.div`
   }
 
   @media (max-width: 768px) {
-    display: none;
+    img { display: none; }
+
+    a::after {
+      content: 'Mpange';
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #fff;
+      letter-spacing: 0.05em;
+      text-transform: capitalize;
+    }
   }
 `;
 
