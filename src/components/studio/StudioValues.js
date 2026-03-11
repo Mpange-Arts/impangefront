@@ -2,12 +2,14 @@ import React, { useRef } from "react";
 import styled from "styled-components";
 import { motion, useInView } from "framer-motion";
 
-// ─── Styled ───────────────────────────────────────────────────
-
 const Wrapper = styled.section`
   background: #0a0a0a;
   padding: 12vh 6% 16vh;
   font-family: 'PP Neue Montreal', sans-serif;
+
+  @media (max-width: 768px) {
+    padding: 10vh 6% 12vh;
+  }
 `;
 
 const TopLabel = styled(motion.div)`
@@ -29,10 +31,14 @@ const TopLabel = styled(motion.div)`
     color: rgba(255,255,255,0.35);
     font-weight: 300;
   }
+
+  @media (max-width: 768px) {
+    margin-bottom: 6vh;
+  }
 `;
 
 const Intro = styled(motion.p)`
-  font-size: clamp(1.4rem, 3vw, 2.6rem);
+  font-size: clamp(1.2rem, 3vw, 2.6rem);
   font-weight: 400;
   line-height: 1.35;
   letter-spacing: -0.02em;
@@ -40,9 +46,11 @@ const Intro = styled(motion.p)`
   max-width: 680px;
   margin: 0 0 16vh;
   text-transform: none;
-`;
 
-// ── Values grid — 2 columns, pairs stack vertically ──────────
+  @media (max-width: 768px) {
+    margin: 0 0 10vh;
+  }
+`;
 
 const ValuesGrid = styled.div`
   display: grid;
@@ -51,6 +59,7 @@ const ValuesGrid = styled.div`
 
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
+    gap: 0;
   }
 `;
 
@@ -58,11 +67,14 @@ const ValueItem = styled(motion.div)`
   padding: 8vh 0;
   border-top: 1px solid rgba(255,255,255,0.07);
 
-  /* Right column items offset slightly so pairs read diagonal */
   &.right {
     margin-top: 18vh;
+  }
 
-    @media (max-width: 768px) {
+  @media (max-width: 768px) {
+    padding: 5vh 0;
+
+    &.right {
       margin-top: 0;
     }
   }
@@ -78,7 +90,7 @@ const ValueNum = styled.span`
 `;
 
 const ValueTitle = styled.h3`
-  font-size: clamp(2rem, 4vw, 4rem);
+  font-size: clamp(1.6rem, 4vw, 4rem);
   font-weight: 400;
   line-height: 1.05;
   letter-spacing: -0.03em;
@@ -86,6 +98,11 @@ const ValueTitle = styled.h3`
   margin: 0 0 3.5vh;
   text-transform: none;
   max-width: 480px;
+
+  @media (max-width: 768px) {
+    font-size: clamp(1.5rem, 7vw, 2.4rem);
+    margin: 0 0 2.5vh;
+  }
 `;
 
 const ValueText = styled.p`
@@ -98,8 +115,6 @@ const ValueText = styled.p`
   max-width: 380px;
   letter-spacing: 0.01em;
 `;
-
-// ─── Data ─────────────────────────────────────────────────────
 
 const VALUES = [
   {
@@ -128,9 +143,7 @@ const VALUES = [
   },
 ];
 
-// ─── Sub-component — each item owns its ref ──────────────────
-
-const Item = ({ value, index }) => {
+const Item = ({ value }) => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, amount: 0.25 });
 
@@ -148,8 +161,6 @@ const Item = ({ value, index }) => {
     </ValueItem>
   );
 };
-
-// ─── Component ────────────────────────────────────────────────
 
 const StudioValues = () => {
   const introRef = useRef(null);
@@ -178,7 +189,7 @@ const StudioValues = () => {
 
       <ValuesGrid>
         {VALUES.map((value, i) => (
-          <Item key={i} value={value} index={i} />
+          <Item key={i} value={value} />
         ))}
       </ValuesGrid>
     </Wrapper>

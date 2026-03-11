@@ -1,8 +1,7 @@
 import React, { useRef } from "react";
 import styled from "styled-components";
 import { motion, useInView } from "framer-motion";
-
-// ─── Styled ───────────────────────────────────────────────────
+import starSrc from "../../assets/star.png";
 
 const Wrapper = styled.section`
   background: #f5f5f3;
@@ -10,10 +9,8 @@ const Wrapper = styled.section`
   font-family: 'PP Neue Montreal', sans-serif;
 `;
 
-// ── Giant headline ────────────────────────────────────────────
-
 const Headline = styled(motion.h2)`
-  font-size: clamp(4rem, 13vw, 15rem);
+  font-size: clamp(3rem, 13vw, 15rem);
   font-weight: 500;
   line-height: 0.92;
   letter-spacing: -0.04em;
@@ -21,14 +18,9 @@ const Headline = styled(motion.h2)`
   margin: 0 0 14vh;
   text-transform: none;
 
-  /* Second and third lines indent right like the reference */
   span.indent {
     display: block;
     padding-left: 18%;
-
-    @media (max-width: 768px) {
-      padding-left: 0;
-    }
   }
 
   em {
@@ -37,9 +29,15 @@ const Headline = styled(motion.h2)`
     font-weight: 400;
     color: rgba(0,0,0,0.35);
   }
-`;
 
-// ── Lower body ────────────────────────────────────────────────
+  @media (max-width: 768px) {
+    margin: 0 0 8vh;
+
+    span.indent {
+      padding-left: 0;
+    }
+  }
+`;
 
 const Body = styled.div`
   display: grid;
@@ -54,7 +52,7 @@ const Body = styled.div`
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
-    gap: 5vh;
+    gap: 6vh;
   }
 `;
 
@@ -108,6 +106,21 @@ const QuoteWrap = styled(motion.div)`
 
   @media (max-width: 600px) {
     justify-self: start;
+    max-width: 100%;
+    border-top: 1px solid rgba(0,0,0,0.1);
+    padding-top: 3vh;
+  }
+`;
+
+const QuoteIcon = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  img {
+    width: 18px;
+    height: 18px;
+    opacity: 0.25;
   }
 `;
 
@@ -121,16 +134,12 @@ const QuoteText = styled.p`
   letter-spacing: 0.01em;
 `;
 
-// ─── Component ────────────────────────────────────────────────
-
 const StudioManifesto = () => {
   const bodyRef = useRef(null);
   const bodyInView = useInView(bodyRef, { once: true, amount: 0.3 });
 
   return (
     <Wrapper>
-
-      {/* Giant headline — staggered lines */}
       <Headline
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -143,7 +152,6 @@ const StudioManifesto = () => {
         <span className="indent">Converts</span>
       </Headline>
 
-      {/* Label + body + quote */}
       <Body ref={bodyRef}>
         <SideLabel
           initial={{ opacity: 0, x: -12 }}
@@ -170,6 +178,9 @@ const StudioManifesto = () => {
           animate={bodyInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
         >
+          <QuoteIcon>
+            <img src={starSrc} alt="" />
+          </QuoteIcon>
           <QuoteText>
             "Our work is informed by research and strategy, but at the
             end of the day we focus on making people feel something
@@ -177,7 +188,6 @@ const StudioManifesto = () => {
           </QuoteText>
         </QuoteWrap>
       </Body>
-
     </Wrapper>
   );
 };

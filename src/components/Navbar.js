@@ -44,21 +44,6 @@ const Logo = styled.div`
   }
 `;
 
-/* Mobile back arrow — visible only on mobile, fades out on scroll */
-const BackArrow = styled(motion.div)`
-  display: none;
-  @media (max-width: 768px) {
-    display: flex;
-    align-items: center;
-    a {
-      font-size: 1.4rem;
-      color: #fff;
-      text-decoration: none;
-      line-height: 1;
-    }
-  }
-`;
-
 const NavLinks = styled(motion.div)`
   display: flex;
   gap: 1.5em;
@@ -321,20 +306,6 @@ function Navbar() {
         <Logo>
           <Link to="/"><img src={logoSrc} alt="Mpange" /></Link>
         </Logo>
-
-        {/* Mobile only back arrow — fades out on scroll */}
-        <AnimatePresence>
-          {!scrolled && (
-            <BackArrow
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.2 }}
-            >
-              <Link to="/">←</Link>
-            </BackArrow>
-          )}
-        </AnimatePresence>
 
         {/* Desktop nav links */}
         <AnimatePresence>

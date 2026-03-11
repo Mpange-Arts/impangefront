@@ -5,16 +5,12 @@ import img1 from "../../assets/image/3.jpg";
 import img2 from "../../assets/image/1.jpg";
 import img3 from "../../assets/image/woman-with-flowers-face-hand.jpg";
 
-// ─── Styled ───────────────────────────────────────────────────
-
 const Wrapper = styled.section`
   background: #f5f5f3;
   padding: 14vh 0 0;
   font-family: 'PP Neue Montreal', sans-serif;
   overflow: hidden;
 `;
-
-// ── Scattered image grid ──────────────────────────────────────
 
 const ImageGrid = styled.div`
   position: relative;
@@ -23,14 +19,14 @@ const ImageGrid = styled.div`
 
   @media (max-width: 768px) {
     height: auto;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    padding: 0 6%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 220px 180px;
+    gap: 8px;
+    padding: 0 4%;
   }
 `;
 
-/* Left tall portrait — bleeds from left edge */
 const ImgLeft = styled(motion.div)`
   position: absolute;
   top: 0;
@@ -51,11 +47,13 @@ const ImgLeft = styled(motion.div)`
   @media (max-width: 768px) {
     position: relative;
     width: 100%;
-    height: 320px;
+    height: 100%;
+    top: auto; left: auto;
+    grid-column: 1;
+    grid-row: 1 / 3;
   }
 `;
 
-/* Centre landscape — offset down */
 const ImgCenter = styled(motion.div)`
   position: absolute;
   top: 14%;
@@ -75,13 +73,14 @@ const ImgCenter = styled(motion.div)`
 
   @media (max-width: 768px) {
     position: relative;
-    top: 0; left: 0;
+    top: auto; left: auto;
     width: 100%;
-    height: 260px;
+    height: 100%;
+    grid-column: 2;
+    grid-row: 1;
   }
 `;
 
-/* Bottom right — small, overlaps centre */
 const ImgRight = styled(motion.div)`
   position: absolute;
   top: 52%;
@@ -102,14 +101,13 @@ const ImgRight = styled(motion.div)`
 
   @media (max-width: 768px) {
     position: relative;
-    top: 0; right: 0;
-    width: 60%;
-    height: 200px;
-    align-self: flex-end;
+    top: auto; right: auto;
+    width: 100%;
+    height: 100%;
+    grid-column: 2;
+    grid-row: 2;
   }
 `;
-
-// ── Statement block ───────────────────────────────────────────
 
 const StatementWrap = styled.div`
   padding: 10vh 6% 14vh;
@@ -121,7 +119,7 @@ const StatementWrap = styled.div`
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
     gap: 4vh;
-    padding: 8vh 6% 12vh;
+    padding: 8vh 6% 10vh;
   }
 `;
 
@@ -146,6 +144,10 @@ const SideLabel = styled(motion.div)`
     color: rgba(0,0,0,0.4);
     font-weight: 300;
   }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
 `;
 
 const StatementRight = styled.div`
@@ -155,7 +157,7 @@ const StatementRight = styled.div`
 `;
 
 const Statement = styled(motion.h2)`
-  font-size: clamp(1.8rem, 4vw, 4rem);
+  font-size: clamp(1.5rem, 4vw, 4rem);
   font-weight: 400;
   line-height: 1.2;
   letter-spacing: -0.025em;
@@ -181,8 +183,6 @@ const Industry = styled.span`
   line-height: 1.4;
 `;
 
-// ─── Data ─────────────────────────────────────────────────────
-
 const INDUSTRIES = [
   "Brand Identity & Strategy",
   "Film Direction & Photography",
@@ -191,27 +191,22 @@ const INDUSTRIES = [
   "Campaign & Marketing",
 ];
 
-// ─── Component ────────────────────────────────────────────────
-
 const StudioAbout = () => {
   const wrapperRef    = useRef(null);
   const statementRef  = useRef(null);
   const statementInView = useInView(statementRef, { once: true, amount: 0.3 });
 
-  // Subtle parallax on each image
   const { scrollYProgress } = useScroll({
     target: wrapperRef,
     offset: ["start end", "end start"],
   });
 
-  const yLeft   = useTransform(scrollYProgress, [0, 1], ["0px",  "-40px"]);
-  const yCenter = useTransform(scrollYProgress, [0, 1], ["0px",  "-24px"]);
-  const yRight  = useTransform(scrollYProgress, [0, 1], ["0px",  "-60px"]);
+  const yLeft   = useTransform(scrollYProgress, [0, 1], ["0px", "-40px"]);
+  const yCenter = useTransform(scrollYProgress, [0, 1], ["0px", "-24px"]);
+  const yRight  = useTransform(scrollYProgress, [0, 1], ["0px", "-60px"]);
 
   return (
     <Wrapper id="studio-about" ref={wrapperRef}>
-
-      {/* ── Scattered images ───────────────────────────────── */}
       <ImageGrid>
         <ImgLeft
           style={{ y: yLeft }}
@@ -244,7 +239,6 @@ const StudioAbout = () => {
         </ImgRight>
       </ImageGrid>
 
-      {/* ── Statement ─────────────────────────────────────── */}
       <StatementWrap ref={statementRef}>
         <SideLabel
           initial={{ opacity: 0, x: -12 }}
@@ -276,7 +270,6 @@ const StudioAbout = () => {
           </Industries>
         </StatementRight>
       </StatementWrap>
-
     </Wrapper>
   );
 };

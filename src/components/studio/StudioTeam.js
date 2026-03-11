@@ -4,14 +4,10 @@ import { motion, useInView } from "framer-motion";
 import img1 from "../../assets/image/3.jpg";
 import img2 from "../../assets/image/woman-with-flowers-face-hand.jpg";
 
-// ─── Styled ───────────────────────────────────────────────────
-
 const Wrapper = styled.section`
   background: #0a0a0a;
   font-family: 'PP Neue Montreal', sans-serif;
 `;
-
-// ── Part 1 — giant title block ────────────────────────────────
 
 const TitleBlock = styled.div`
   position: relative;
@@ -19,6 +15,11 @@ const TitleBlock = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-end;
+
+  @media (max-width: 768px) {
+    align-items: flex-start;
+    padding: 10vh 6% 8vh;
+  }
 `;
 
 const SideLabel = styled(motion.div)`
@@ -42,10 +43,17 @@ const SideLabel = styled(motion.div)`
     color: rgba(255,255,255,0.35);
     font-weight: 300;
   }
+
+  @media (max-width: 768px) {
+    position: relative;
+    bottom: auto;
+    left: auto;
+    margin-bottom: 4vh;
+  }
 `;
 
 const BigTitle = styled(motion.h2)`
-  font-size: clamp(4rem, 11vw, 14rem);
+  font-size: clamp(3.2rem, 11vw, 14rem);
   font-weight: 500;
   line-height: 0.92;
   letter-spacing: -0.04em;
@@ -63,20 +71,23 @@ const BigTitle = styled(motion.h2)`
   }
 
   @media (max-width: 768px) {
+    text-align: left;
     max-width: 100%;
-    font-size: clamp(3rem, 14vw, 6rem);
+    font-size: clamp(2.8rem, 14vw, 5rem);
   }
 `;
-
-// ── Part 2 — body text + two images ──────────────────────────
 
 const ContentBlock = styled.div`
   padding: 4vh 6% 16vh;
   position: relative;
+
+  @media (max-width: 768px) {
+    padding: 4vh 6% 10vh;
+  }
 `;
 
 const BodyText = styled(motion.p)`
-  font-size: clamp(1.2rem, 2.4vw, 2.2rem);
+  font-size: clamp(1.1rem, 2.4vw, 2.2rem);
   font-weight: 400;
   line-height: 1.45;
   letter-spacing: -0.02em;
@@ -84,11 +95,9 @@ const BodyText = styled(motion.p)`
   text-transform: none;
   margin: 0 0 10vh auto;
   max-width: 580px;
-  text-align: left;
-  margin-left: auto;
 
   @media (max-width: 768px) {
-    margin-left: 0;
+    margin: 0 0 6vh 0;
     max-width: 100%;
   }
 `;
@@ -101,6 +110,7 @@ const ImagesRow = styled.div`
 
   @media (max-width: 600px) {
     grid-template-columns: 1fr;
+    gap: 12px;
   }
 `;
 
@@ -113,23 +123,26 @@ const ImgWrap = styled(motion.div)`
     object-fit: cover;
     transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
   }
-
   &:hover img { transform: scale(1.04); }
 
-  /* Left image — taller, sits lower */
   &.left {
     margin-top: 14vh;
     img { height: 65vh; }
-    @media (max-width: 600px) { margin-top: 0; }
+
+    @media (max-width: 600px) {
+      margin-top: 0;
+      img { height: 100vw; }
+    }
   }
 
-  /* Right image — shorter, sits higher */
   &.right {
     img { height: 52vh; }
+
+    @media (max-width: 600px) {
+      img { height: 100vw; }
+    }
   }
 `;
-
-// ─── Component ────────────────────────────────────────────────
 
 const StudioTeam = () => {
   const bodyRef = useRef(null);
@@ -137,9 +150,16 @@ const StudioTeam = () => {
 
   return (
     <Wrapper>
-
-      {/* ── Giant title ──────────────────────────────────────── */}
       <TitleBlock>
+        <SideLabel
+          initial={{ opacity: 0, x: -12 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true, amount: 0.5 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
+        >
+          <span>The Team</span>
+        </SideLabel>
+
         <BigTitle
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -150,18 +170,8 @@ const StudioTeam = () => {
           Visual<br />
           <em>Enthusiasts</em>
         </BigTitle>
-
-        <SideLabel
-          initial={{ opacity: 0, x: -12 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true, amount: 0.5 }}
-          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
-        >
-          <span>The Team</span>
-        </SideLabel>
       </TitleBlock>
 
-      {/* ── Body + images ────────────────────────────────────── */}
       <ContentBlock ref={bodyRef}>
         <BodyText
           initial={{ opacity: 0, y: 30 }}
@@ -195,7 +205,6 @@ const StudioTeam = () => {
           </ImgWrap>
         </ImagesRow>
       </ContentBlock>
-
     </Wrapper>
   );
 };
