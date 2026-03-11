@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 
 // ── Import your logo ──────────────────────────────────────
 import logoSrc from "../assets/logo.png";
+import starSrc from "../assets/star.svg";
 
 // --- Styled Components ---
 
@@ -132,7 +133,7 @@ const MenuOverlay = styled(motion.div)`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding: 0 8%;
+  padding: 120px 8% 6vh;
   overflow: hidden;
 `;
 
@@ -325,7 +326,7 @@ function Navbar() {
         </AnimatePresence>
 
         <AnimatePresence>
-          {(scrolled || isMobile) && (
+          {(scrolled || isMobile) && !menuOpen && (
             <HamburgerBtn
               onClick={() => setMenuOpen((o) => !o)}
               initial={{ opacity: 0, x: 12 }}
@@ -338,7 +339,6 @@ function Navbar() {
                 <span />
                 <span />
               </BurgerIcon>
-              <span>{menuOpen ? 'Close' : 'Menu'}</span>
             </HamburgerBtn>
           )}
         </AnimatePresence>
@@ -364,7 +364,6 @@ function Navbar() {
                   <span />
                   <span />
                 </BurgerIcon>
-                <span>Close</span>
               </HamburgerBtn>
             </MenuTop>
 
@@ -393,7 +392,10 @@ function Navbar() {
               exit={{ opacity: 0 }}
               transition={{ delay: 0.5, duration: 0.4 }}
             >
-              <FooterTag>✦ Mpange Creative Arts</FooterTag>
+              <FooterTag>
+                <img src={starSrc} alt="" style={{ width: '12px', height: '12px', marginRight: '6px', verticalAlign: 'middle', opacity: 0.3 }} />
+                Mpange Creative Arts
+              </FooterTag>
               <FooterLinks>
                 <Link to="/work" onClick={closeMenu}>Instagram</Link>
                 <Link to="/work" onClick={closeMenu}>LinkedIn</Link>
