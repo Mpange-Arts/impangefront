@@ -2,6 +2,9 @@ import React from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 
+// 1. Importing your local image asset
+import heroBg from '../assets/image/herosec.jpg';
+
 // --- STYLED COMPONENTS ---
 
 const HeroContainer = styled.section`
@@ -11,10 +14,12 @@ const HeroContainer = styled.section`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  padding: 12vh 5% 8vh 5%; 
   color: #fff;
-  font-family: 'Neue Haas Grotesk Display Pro', 'Helvetica Neue', Arial, sans-serif;
+  font-family: "PP Neue Montreal", sans-serif;
   overflow: hidden;
-  background-color: #000;
+  background-color: #111;
+  box-sizing: border-box;
 `;
 
 const Background = styled.div`
@@ -25,12 +30,17 @@ const Background = styled.div`
   height: 100%;
   z-index: 0;
 
-  /* Dark overlay for text contrast */
+  /* Premium cinematic overlay */
   &::after {
     content: '';
     position: absolute;
     inset: 0;
-    background: rgba(0, 0, 0, 0.5);
+    background: linear-gradient(
+      to bottom, 
+      rgba(0, 0, 0, 0.4) 0%, 
+      rgba(0, 0, 0, 0.1) 50%, 
+      rgba(0, 0, 0, 0.6) 100%
+    );
   }
 
   img {
@@ -40,91 +50,80 @@ const Background = styled.div`
   }
 `;
 
-const MainContent = styled.div`
-  padding: 18vh 5% 0 5%;
+const MainTextWrapper = styled.div`
   position: relative;
   z-index: 2;
-  max-width: 900px;
+  max-width: 500px;
 `;
 
 const Headline = styled.h1`
-  font-size: clamp(1.8rem, 4vw, 3.2rem);
+  /* Reduced and neatened typography */
+  font-size: clamp(1.4rem, 2.2vw, 1.8rem); 
   font-weight: 400;
-  line-height: 1.3;
+  line-height: 1.5;
   margin: 0;
-  letter-spacing: -0.01em;
   color: #fff;
-  text-transform: none;
+  letter-spacing: -0.01em;
 `;
 
-// Bottom navigation
-const BottomNav = styled.div`
+const Footer = styled.div`
+  position: relative;
+  z-index: 2;
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  padding: 0 5% 40px 5%;
-  position: relative;
-  z-index: 2;
-  flex-wrap: wrap;
-  gap: 30px;
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  padding-top: 40px;
 `;
 
-const LeftNav = styled.div`
+const BottomLeft = styled.div`
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
+
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+  }
 
   a {
     color: #fff;
     text-decoration: none;
-    font-size: 1rem;
-    position: relative;
-    padding-bottom: 4px;
-    width: fit-content;
-
-    &::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      bottom: 0;
-      width: 100%;
-      height: 1px;
-      background: #fff;
-      transition: transform 0.3s ease;
-      transform-origin: right;
-    }
-
-    &:hover::after {
-      transform: scaleX(0);
-      transform-origin: left;
-    }
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    opacity: 0.8;
   }
 `;
 
-const RightNav = styled.div`
+const BottomRight = styled.div`
   display: flex;
-  gap: 60px;
-  font-size: 1rem;
-  line-height: 1.8;
+  gap: 150px; /* Spaced navigation columns */
 
-  @media (max-width: 768px) {
-    flex-direction: column;
-    gap: 30px;
-    text-align: right;
+  @media (max-width: 900px) {
+    gap: 60px;
   }
 `;
 
 const NavCol = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 10px;
 
   a {
     color: #fff;
     text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 400;
+    opacity: 0.7;
     transition: opacity 0.3s ease;
 
     &:hover {
-      opacity: 0.6;
+      opacity: 1;
     }
   }
 `;
@@ -135,42 +134,37 @@ const HeroSection = () => {
   return (
     <HeroContainer>
       <Background>
-        <img
-          src="https://images.unsplash.com/photo-1516483638261-f40af5aa3161?auto=format&fit=crop&q=80&w=2000"
-          alt="Cinematic landscape"
-        />
+        {/* Using your local asset */}
+        <img src={heroBg} alt="Mpange Cinematic Backdrop" />
       </Background>
 
-      <MainContent>
+      <MainTextWrapper>
         <Headline>
-          We help experience-driven companies thrive<br />
-          by making their audience feel the refined<br />
-          intricacies of their brand and product in the<br />
-          digital space. Unforgettable journeys start<br />
-          with a click.
+          We help experience-driven companies thrive by making their audience 
+          feel the refined intricacies of their brand and product.
         </Headline>
-      </MainContent>
+      </MainTextWrapper>
 
-      <BottomNav>
-        {/* Left side: Work + email */}
-        <LeftNav>
-          <Link to="/work">Work</Link>
-          <a href="mailto:hello@exoape.com">hello@exoape.com</a>
-        </LeftNav>
+      <Footer>
+        <BottomLeft>
+          <Link to="/studio">The Studio</Link>
+        </BottomLeft>
 
-        {/* Right side: two columns with Studio, phone, The Studio, News, Contact */}
-        <RightNav>
+        <BottomRight>
           <NavCol>
+            <Link to="/work">Work</Link>
             <Link to="/studio">Studio</Link>
-            <a href="tel:+31772086200">+31772086200</a>
-          </NavCol>
-          <NavCol>
-            <Link to="/the-studio">The Studio</Link>
             <Link to="/news">News</Link>
             <Link to="/contact">Contact</Link>
           </NavCol>
-        </RightNav>
-      </BottomNav>
+
+          <NavCol>
+            <a href="mailto:hello@exoape.com">hello@mpange.com</a>
+            {/* Using your specific phone number */}
+            <a href="tel:+260972276257">+260 972 276 257</a>
+          </NavCol>
+        </BottomRight>
+      </Footer>
     </HeroContainer>
   );
 };

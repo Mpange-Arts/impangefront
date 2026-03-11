@@ -1,13 +1,12 @@
 import React from "react";
 import Navbar from "../components/Navbar";
+import NewsStories from "../components/news/NewsStories";
 
 function News() {
   return (
     <>
       <Navbar />
-      <div className="container">
-        <h1>News</h1>
-      </div>
+      <NewsStories />
     </>
   );
 }

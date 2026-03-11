@@ -7,13 +7,13 @@
 }
 
 html {
-  scroll-behavior: smooth; /* Enable smooth scrolling */
+  scroll-behavior: smooth;
 }
 
 body {
   font-family: "PP Neue Montreal", sans-serif;
   background-color: #000;
-  overflow: auto; /* Enable scrolling */
+  overflow: auto;
 }
 
 /* ============================= */
@@ -74,9 +74,8 @@ p {
 .container {
   position: relative;
   width: 100vw;
-  height: auto; /* Allow content to expand */
-  min-height: 100svh;
-  overflow: visible; /* Enable content overflow for scrolling */
+  height: 100svh;
+  overflow: hidden;
 }
 
 /* ============================= */
@@ -84,7 +83,7 @@ p {
 /* ============================= */
 
 .nav {
-  position: fixed; /* Fixed to stay at top on scroll */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100vw;
@@ -92,14 +91,13 @@ p {
   display: flex;
   align-items: center;
   gap: 1.5em;
-  transform: translateY(0); /* Start visible after animation */
+  transform: translateY(0);
   will-change: transform;
-  transition: top 0.3s ease-in-out; /* Smooth hide/show */
-  background: transparent; /* Transparent on load */
-  z-index: 1; /* Above content */
+  transition: top 0.3s ease-in-out;
+  background: transparent;
+  z-index: 100;
 }
 
-/* Navbar hover underline animation */
 .nav-links a {
   position: relative;
   text-decoration: none;
@@ -122,7 +120,6 @@ p {
   transform: scaleX(1);
 }
 
-/* Layout structure */
 .nav > .logo {
   flex: 1;
 }
@@ -140,71 +137,10 @@ p {
   justify-content: flex-end;
 }
 
-/* Logo */
 .logo a {
   text-transform: capitalize;
   font-size: 14px;
   font-weight: bolder;
-}
-
-/* ============================= */
-/* CART + LOGIN PILL */
-/* ============================= */
-
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 0; /* Remove gap for separator */
-  background-color: #303030; /* Dark pill to match image */
-  padding: 6px;
-  border-radius: 40px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
-}
-
-.action-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 44px;
-  height: 36px;
-  border-radius: 999px;
-  background: transparent;
-  color: #fff; /* White icons */
-  font-size: 18px;
-  transition: 0.3s ease;
-  position: relative; /* For badge */
-}
-
-.action-btn:hover {
-  background: #444; /* Darker hover */
-}
-
-.action-btn ion-icon {
-  font-size: 18px;
-}
-
-.separator {
-  color: #fff;
-  opacity: 0.5;
-  font-size: 14px;
-  margin: 0 4px; /* Spacing around separator */
-}
-
-/* Badge for cart (white cube) */
-.badge {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: white;
-  color: black;
-  width: 16px;
-  height: 16px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 10px;
-  border-radius: 0;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 /* ============================= */
@@ -223,61 +159,55 @@ p {
 
 .hero-subtext {
   text-transform: none;
-  font-size: 12px;
-  letter-spacing: 0.3px;
-  color: rgba(255, 255, 255, 0.9);
-  max-width: 720px;
-  text-align: center;
-  line-height: 1.3;
-  margin-top: 0.5rem;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.55);
+  max-width: 320px;
+  text-align: right;
+  line-height: 1.65;
+  font-weight: 300;
 }
 
 /* ============================= */
-/* CTA BUTTON */
+/* HERO SUBTEXT — bottom right corner */
 /* ============================= */
 
-.cta {
+.hero-subtext-corner {
   position: absolute;
-  left: 50%;
-  bottom: 3em;
-  transform: translateX(-50%) scale(0);
-  width: 50%;
-  height: 60px;
-  padding: 0.5rem;
+  bottom: 3.5em;
+  right: 1.5em;
+  max-width: 320px;
+  text-align: right;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
   display: flex;
-  justify-content: flex-end;
-  background-color: #fff;
-  border-radius: 4rem;
-  will-change: transform;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
 }
 
-.cta-label {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+/* thin decorative line above the text */
+.hero-subtext-corner::before {
+  content: '';
+  display: block;
+  width: 40px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.3);
+  margin-left: auto;
 }
 
-.cta-label p {
-  color: #000;
-}
-
-.cta-icon {
-  position: relative;
-  height: 100%;
-  aspect-ratio: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  color: #fff;
-  background-color: #303030;
-  border-radius: 60px;
-  transform: scale(0);
-  will-change: transform;
+.hero-subtext-corner .hero-subtext {
+  text-align: right;
+  max-width: 320px;
+  font-size: 13px;
+  letter-spacing: 0.04em;
+  line-height: 1.65;
+  color: rgba(255, 255, 255, 0.55);
+  text-transform: none;
+  font-weight: 300;
 }
 
 /* ============================= */
-/* LOADER */
+/* LOADER — must be highest z-index on the page */
 /* ============================= */
 
 .loader {
@@ -287,7 +217,7 @@ p {
   width: 100vw;
   height: 100svh;
   overflow: hidden;
-  z-index: 2;
+  z-index: 9999;
 }
 
 .overlay {
@@ -409,7 +339,7 @@ p {
 }
 
 /* ============================= */
-/* SECTION STYLES FOR SCROLL ANIMATIONS */
+/* SECTION STYLES */
 /* ============================= */
 
 .section {
@@ -419,24 +349,23 @@ p {
   justify-content: center;
   color: #fff;
   font-size: 2rem;
-  background: #111; /* Example background for sections */
-  opacity: 0; /* Start hidden for animation */
-  transform: translateY(50px); /* Start offset for reveal */
+  background: #111;
+  opacity: 0;
+  transform: translateY(50px);
 }
 
 /* ============================= */
-/* PHILOSOPHY SCROLL‑REVEAL SECTION (TrueKind style) */
+/* PHILOSOPHY SCROLL REVEAL */
 /* ============================= */
 
 .philosophy-section {
   display: flex;
-  min-height: 300vh; /* space for scrolling through all items */
+  min-height: 300vh;
   background-color: #ffffff;
   color: #000000;
   font-family: "PP Neue Montreal", sans-serif;
 }
 
-/* Left sticky column */
 .philosophy-sticky {
   position: sticky;
   top: 0;
@@ -483,15 +412,14 @@ p {
   font-weight: 400;
 }
 
-/* Right scrollable column */
 .philosophy-items {
   width: 50%;
-  padding: 25vh 2rem; /* vertical padding to center first item */
+  padding: 25vh 2rem;
   box-sizing: border-box;
 }
 
 .philosophy-item {
-  min-height: 50vh; /* each item occupies half the viewport height */
+  min-height: 50vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -511,14 +439,13 @@ p {
   transform: translateY(-10px);
 }
 
-/* Icon inside each item */
 .philosophy-item .item-icon {
   width: 80px;
   height: 80px;
   object-fit: cover;
   border-radius: 50%;
   margin-bottom: 1.5rem;
-  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 }
 
 .philosophy-item h3 {
@@ -535,83 +462,18 @@ p {
   max-width: 450px;
 }
 
-/* Mobile responsiveness */
-@media (max-width: 768px) {
-  .philosophy-section {
-    flex-direction: column;
-    min-height: auto;
-  }
-
-  .philosophy-sticky {
-    position: relative;
-    width: 100%;
-    height: auto;
-    padding: 4rem 1.5rem 2rem;
-    text-align: center;
-  }
-
-  .sticky-content h2 {
-    font-size: 3rem;
-  }
-
-  .philosophy-items {
-    width: 100%;
-    padding: 0 1.5rem 4rem;
-  }
-
-  .philosophy-item {
-    min-height: auto;
-    opacity: 1;
-    transform: none;
-    margin-bottom: 3rem;
-  }
-
-  .philosophy-item h3 {
-    font-size: 1.8rem;
-  }
-}
-
 /* ============================= */
-/* RESPONSIVE (global) */
+/* PHILOSOPHY BLOB SECTION */
 /* ============================= */
 
-@media (max-width: 900px) {
-  h1 {
-    font-size: 2.5rem;
-  }
-
-  .nav-links {
-    display: none;
-  }
-
-  .cta {
-    width: 90%;
-  }
-
-  .count .digit h1 {
-    font-size: 8rem;
-  }
-
-  .actions {
-    padding: 5px;
-  }
-
-  .action-btn {
-    width: 40px;
-    height: 34px;
-  }
-}
-
-/* ===== PHILOSOPHY BLOB SECTION (TrueKind replica) ===== */
 .philosophy-blob-section {
   position: relative;
   width: 100%;
-  height: 100vh;               /* full viewport height */
-  background-color: #ffffff;    /* white background outside blob */
+  height: 100vh;
+  background-color: #ffffff;
   overflow: hidden;
 }
 
-/* Central blob */
 .blob-container {
   position: absolute;
   top: 50%;
@@ -619,7 +481,7 @@ p {
   transform: translate(-50%, -50%);
   width: 70vw;
   max-width: 1100px;
-  aspect-ratio: 1.2 / 1;        /* organic rectangle */
+  aspect-ratio: 1.2 / 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -631,24 +493,13 @@ p {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #f5e8df;    /* warm beige */
-  border-radius: 60% 40% 50% 50% / 40% 50% 50% 60%;  /* organic blob shape */
-  transform: rotate(-5deg);      /* slight tilt */
+  background-color: #f5e8df;
+  border-radius: 60% 40% 50% 50% / 40% 50% 50% 60%;
+  transform: rotate(-5deg);
   box-shadow: 0 20px 40px rgba(0, 0, 0, 0.05);
   z-index: 1;
 }
 
-/* Optional central image – uncomment and adjust if you have one */
-/* .central-image {
-  position: absolute;
-  width: 60%;
-  height: auto;
-  z-index: 2;
-  object-fit: contain;
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.1));
-} */
-
-/* Text inside the blob */
 .blob-text {
   position: relative;
   z-index: 3;
@@ -690,7 +541,6 @@ p {
   font-weight: 400;
 }
 
-/* Cards – absolute positioning */
 .card {
   position: absolute;
   width: 260px;
@@ -723,39 +573,67 @@ p {
   text-transform: none;
 }
 
-/* Individual card positions (matching screenshots) */
-.card-1 {
-  top: 15%;
-  left: 10%;
-}
+.card-1 { top: 15%; left: 10%; }
+.card-2 { bottom: 20%; left: 8%; }
+.card-3 { bottom: 15%; right: 10%; }
+.card-4 { top: 12%; right: 8%; }
 
-.card-2 {
-  bottom: 20%;
-  left: 8%;
-}
+/* ============================= */
+/* RESPONSIVE */
+/* ============================= */
 
-.card-3 {
-  bottom: 15%;
-  right: 10%;
-}
-
-.card-4 {
-  top: 12%;
-  right: 8%;
-}
-
-/* Responsive adjustments */
-@media (max-width: 1200px) {
-  .blob-text h2 {
-    font-size: 2.5rem;
+@media (max-width: 768px) {
+  .philosophy-section {
+    flex-direction: column;
+    min-height: auto;
   }
-  .card {
-    width: 220px;
-    padding: 1.2rem;
+
+  .philosophy-sticky {
+    position: relative;
+    width: 100%;
+    height: auto;
+    padding: 4rem 1.5rem 2rem;
+    text-align: center;
+  }
+
+  .sticky-content h2 {
+    font-size: 3rem;
+  }
+
+  .philosophy-items {
+    width: 100%;
+    padding: 0 1.5rem 4rem;
+  }
+
+  .philosophy-item {
+    min-height: auto;
+    opacity: 1;
+    transform: none;
+    margin-bottom: 3rem;
+  }
+
+  .philosophy-item h3 {
+    font-size: 1.8rem;
+  }
+
+  .hero-subtext-corner {
+    display: none;
   }
 }
 
 @media (max-width: 900px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+
+  .nav-links {
+    display: none;
+  }
+
+  .count .digit h1 {
+    font-size: 8rem;
+  }
+
   .philosophy-blob-section {
     height: auto;
     min-height: 100vh;
@@ -765,6 +643,7 @@ p {
     justify-content: center;
     padding: 4rem 1.5rem;
   }
+
   .blob-container {
     position: relative;
     top: 0;
@@ -773,6 +652,7 @@ p {
     width: 100%;
     margin-bottom: 3rem;
   }
+
   .card {
     position: relative;
     top: auto;
@@ -785,3 +665,13 @@ p {
   }
 }
 
+@media (max-width: 1200px) {
+  .blob-text h2 {
+    font-size: 2.5rem;
+  }
+
+  .card {
+    width: 220px;
+    padding: 1.2rem;
+  }
+}

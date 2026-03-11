@@ -5,33 +5,46 @@ import { CustomEase } from "gsap/CustomEase";
 gsap.registerPlugin(CustomEase);
 CustomEase.create("hop", "0.9, 0, 0.1, 1");
 
+// Module-level: resets on hard refresh (F5), persists across React Router nav
+let hasPlayed = false;
+
 function Loader() {
   const loaderRef = useRef(null);
 
   useEffect(() => {
+    const loader = loaderRef.current;
+    if (!loader) return;
+
+    if (hasPlayed) {
+      loader.style.display = "none";
+      loader.style.pointerEvents = "none";
+      gsap.set([".nav", ".line h1", ".line p"], { y: "0%" });
+      gsap.set(".hero-img", { scale: 1 });
+      return;
+    }
+
+    hasPlayed = true;
+
     const timeout = setTimeout(() => {
-      if (loaderRef.current) {
-        loaderRef.current.style.display = "none";
-        loaderRef.current.style.pointerEvents = "none";
-      }
-      console.warn("GSAP animation timed out; forcing loader removal.");
-    }, 5000);
+      loader.style.display = "none";
+      loader.style.pointerEvents = "none";
+      gsap.set([".nav", ".line h1", ".line p"], { y: "0%" });
+      gsap.set(".hero-img", { scale: 1 });
+    }, 7000);
 
     const tl = gsap.timeline({
       delay: 0.3,
       defaults: { ease: "hop" },
       onStart: () => clearTimeout(timeout),
       onComplete: () => {
-        if (loaderRef.current) {
-          gsap.to(loaderRef.current, {
-            opacity: 0,
-            duration: 0.3,
-            onComplete: () => {
-              loaderRef.current.style.display = "none";
-              loaderRef.current.style.pointerEvents = "none";
-            },
-          });
-        }
+        gsap.to(loader, {
+          opacity: 0,
+          duration: 0.4,
+          onComplete: () => {
+            loader.style.display = "none";
+            loader.style.pointerEvents = "none";
+          },
+        });
       },
     });
 
@@ -76,13 +89,6 @@ function Loader() {
       "<"
     );
 
-    tl.to(
-      [".cta", ".cta-icon"],
-      { scale: 1, duration: 1.5, stagger: 0.75, delay: 0.75 },
-      "<"
-    );
-    tl.to(".cta-label p", { y: "0%", duration: 1.5, delay: 0.5 }, "<");
-
     return () => {
       tl.kill();
       clearTimeout(timeout);
@@ -95,7 +101,6 @@ function Loader() {
         <div className="block"></div>
         <div className="block"></div>
       </div>
-
       <div className="intro-logo">
         <div className="word" id="word-1">
           <h1><span>Mpa</span></h1>
@@ -104,19 +109,31 @@ function Loader() {
           <h1>nge</h1>
         </div>
       </div>
-
       <div className="divider"></div>
-
       <div className="spinner-container">
         <div className="spinner"></div>
       </div>
-
       <div className="counter">
-        <div className="count"><div className="digit"><h1>0</h1></div><div className="digit"><h1>0</h1></div></div>
-        <div className="count"><div className="digit"><h1>2</h1></div><div className="digit"><h1>7</h1></div></div>
-        <div className="count"><div className="digit"><h1>6</h1></div><div className="digit"><h1>5</h1></div></div>
-        <div className="count"><div className="digit"><h1>9</h1></div><div className="digit"><h1>8</h1></div></div>
-        <div className="count"><div className="digit"><h1>9</h1></div><div className="digit"><h1>9</h1></div></div>
+        <div className="count">
+          <div className="digit"><h1>0</h1></div>
+          <div className="digit"><h1>0</h1></div>
+        </div>
+        <div className="count">
+          <div className="digit"><h1>2</h1></div>
+          <div className="digit"><h1>7</h1></div>
+        </div>
+        <div className="count">
+          <div className="digit"><h1>6</h1></div>
+          <div className="digit"><h1>5</h1></div>
+        </div>
+        <div className="count">
+          <div className="digit"><h1>9</h1></div>
+          <div className="digit"><h1>8</h1></div>
+        </div>
+        <div className="count">
+          <div className="digit"><h1>9</h1></div>
+          <div className="digit"><h1>9</h1></div>
+        </div>
       </div>
     </div>
   );

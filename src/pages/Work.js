@@ -1,15 +1,14 @@
-import React from "react";
-import Navbar from "../components/Navbar";
+import React from 'react';
+import Navbar from '../components/Navbar';
+import WorkHero from '../components/works/WorkHero';
 
-function Work() {
+function WorkPage() {
   return (
     <>
       <Navbar />
-      <div className="container">
-        <h1>Work</h1>
-      </div>
+      <WorkHero />
     </>
   );
 }
 
-export default Work;
+export default WorkPage;

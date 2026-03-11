@@ -11,26 +11,25 @@ const ParallaxImage = ({ src, alt, speed = 0.2 }) => {
     const element = imageRef.current;
     if (!element) return;
 
-    // Create a tween that maps scroll progress to a translateY value
-    gsap.fromTo(
-      element,
-      { y: 0 },
-      {
-        y: () => element.offsetHeight * speed, // or any value you like
-        ease: "none",
-        scrollTrigger: {
-          trigger: element,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: 0.5, // smooth scrubbing, 0.5 gives a gentle lag
-          invalidateOnRefresh: true,
-        },
-      }
-    );
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        element,
+        { y: 0 },
+        {
+          y: () => element.offsetHeight * speed,
+          ease: "none",
+          scrollTrigger: {
+            trigger: element,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: 0.5,
+            invalidateOnRefresh: true,
+          },
+        }
+      );
+    });
 
-    return () => {
-      ScrollTrigger.getAll().forEach((st) => st.kill());
-    };
+    return () => ctx.revert(); // cleaner cleanup than killing all ScrollTriggers
   }, [speed]);
 
   return (
@@ -40,7 +39,11 @@ const ParallaxImage = ({ src, alt, speed = 0.2 }) => {
       alt={alt}
       style={{
         willChange: "transform",
-        scale: "1.25", // keep scale separate
+        scale: "1.25",
+        width: "100%",
+        height: "100%",
+        objectFit: "cover",
+        display: "block",
       }}
     />
   );

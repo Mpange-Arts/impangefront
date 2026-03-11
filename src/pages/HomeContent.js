@@ -1,11 +1,13 @@
 import React from "react";
-import Loader from "../components/Loader";
 import Navbar from "../components/Navbar";
 import SmoothScroll from "../components/SmoothScroll";
 import CustomCursor from "../components/CustomCursor";
-import MagneticButton from "../components/MagneticButton";
-import HeroSection from "../components/HeroSection"; // <-- 1. Import the new component here
+import HeroSection from "../components/HeroSection";
 import WorkShowcase from "../components/WorkShowcase";
+import PlayReel from "../components/PlayReel";
+import Services from "../components/Services";
+import NewsSection from "../components/NewsSection";
+import { CallToAction, Footer } from "../components/Footer";
 import heroVideo from "../assets/hero.mp4";
 
 function HomeContent() {
@@ -13,7 +15,6 @@ function HomeContent() {
     <>
       <SmoothScroll />
       <CustomCursor />
-      <Loader />
 
       <div className="container">
         {/* Video Background */}
@@ -34,30 +35,37 @@ function HomeContent() {
           <div className="line">
             <h1>but do them <span>well.</span></h1>
           </div>
-          <div className="line">
-            <p className="hero-subtext">
-              Mpange is a celebration of intentional living — curated pieces,
-              honest materials, and craft that endures.
-            </p>
-          </div>
         </div>
 
-        {/* CTA — magnetic */}
-        <MagneticButton className="cta" strength={0.15}>
-          <div className="cta-label">
-            <p>Explore the collection</p>
-          </div>
-          <div className="cta-icon">
-            <ion-icon name="arrow-forward-outline"></ion-icon>
-          </div>
-        </MagneticButton>
+        {/* Bottom-right subtext */}
+        <div className="line hero-subtext-corner">
+          <p className="hero-subtext">
+            Mpange is a celebration of intentional designs — aesthetic brandings,
+            that feels alive, and crafts that endures phasing.
+          </p>
+        </div>
       </div>
 
-      {/* 2. Drop the new component right here, before the WorkShowcase! */}
+      {/* Narrative Section: Mpange Creative Arts Profile */}
       <HeroSection />
 
-      {/* Work showcase sits outside container so it's full width */}
+      {/* Visual Section: Parallax Image Grid */}
       <WorkShowcase />
+
+      {/* Immersive Section: The Interactive Play Reel Experience */}
+      <PlayReel />
+
+      {/* Horizontal Scroll Section: What We Do */}
+      <Services />
+
+      {/* Editorial Section: News */}
+      <NewsSection />
+
+      {/* CTA — Get in Touch split panel */}
+      <CallToAction />
+
+      {/* Footer */}
+      <Footer />
     </>
   );
 }
