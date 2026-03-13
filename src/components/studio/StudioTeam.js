@@ -10,142 +10,83 @@ const Wrapper = styled.section`
 `;
 
 const TitleBlock = styled.div`
-  position: relative;
-  padding: 14vh 6% 12vh;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-
-  @media (max-width: 768px) {
-    align-items: flex-start;
-    padding: 10vh 6% 8vh;
-  }
+  position: relative; padding: 14vh 6% 12vh;
+  display: flex; flex-direction: column; align-items: flex-end;
+  @media (max-width: 768px) { align-items: flex-start; padding: 10vh 6% 8vh; }
 `;
 
 const SideLabel = styled(motion.div)`
-  position: absolute;
-  bottom: 14vh;
-  left: 6%;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  &::before {
-    content: '+';
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.35);
-  }
-
+  position: absolute; bottom: 14vh; left: 6%;
+  display: flex; align-items: center; gap: 8px;
+  &::before { content: '+'; font-size: 0.75rem; color: rgba(255,255,255,0.35); }
   span {
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(255,255,255,0.35);
-    font-weight: 300;
+    font-size: 0.68rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: rgba(255,255,255,0.35); font-weight: 300;
   }
-
   @media (max-width: 768px) {
-    position: relative;
-    bottom: auto;
-    left: auto;
-    margin-bottom: 4vh;
+    position: relative; bottom: auto; left: auto; margin-bottom: 4vh;
   }
 `;
 
 const BigTitle = styled(motion.h2)`
   font-size: clamp(3.2rem, 11vw, 14rem);
-  font-weight: 500;
-  line-height: 0.92;
-  letter-spacing: -0.04em;
-  color: #f0ede8;
-  margin: 0;
-  text-align: right;
-  text-transform: none;
-  max-width: 80%;
-
+  font-weight: 500; line-height: 0.92; letter-spacing: -0.04em;
+  color: #f0ede8; margin: 0; text-align: right; text-transform: none; max-width: 80%;
   em {
     font-family: 'PP Editorial Old', serif;
-    font-style: italic;
-    font-weight: 400;
-    color: rgba(240,237,232,0.35);
+    font-style: italic; font-weight: 400; color: rgba(240,237,232,0.35);
   }
-
   @media (max-width: 768px) {
-    text-align: left;
-    max-width: 100%;
-    font-size: clamp(2.8rem, 14vw, 5rem);
+    text-align: left; max-width: 100%; font-size: clamp(2.8rem, 14vw, 5rem);
   }
 `;
 
 const ContentBlock = styled.div`
-  padding: 4vh 6% 16vh;
-  position: relative;
-
-  @media (max-width: 768px) {
-    padding: 4vh 6% 10vh;
-  }
+  padding: 4vh 6% 16vh; position: relative;
+  @media (max-width: 768px) { padding: 4vh 6% 10vh; }
 `;
 
 const BodyText = styled(motion.p)`
   font-size: clamp(1.1rem, 2.4vw, 2.2rem);
-  font-weight: 400;
-  line-height: 1.45;
-  letter-spacing: -0.02em;
-  color: rgba(255,255,255,0.88);
-  text-transform: none;
-  margin: 0 0 10vh auto;
-  max-width: 580px;
-
-  @media (max-width: 768px) {
-    margin: 0 0 6vh 0;
-    max-width: 100%;
-  }
+  font-weight: 400; line-height: 1.45; letter-spacing: -0.02em;
+  color: rgba(255,255,255,0.88); text-transform: none;
+  margin: 0 0 10vh auto; max-width: 580px;
+  @media (max-width: 768px) { margin: 0 0 6vh 0; max-width: 100%; }
 `;
 
 const ImagesRow = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2vw;
-  align-items: end;
-
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-    gap: 12px;
-  }
+  display: grid; grid-template-columns: 1fr 1fr; gap: 2vw; align-items: end;
+  @media (max-width: 600px) { grid-template-columns: 1fr; gap: 12px; }
 `;
 
 const ImgWrap = styled(motion.div)`
   overflow: hidden;
-
   img {
-    width: 100%;
-    display: block;
-    object-fit: cover;
-    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 100%; display: block; object-fit: cover;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease;
   }
+  img.img-loading { filter: blur(10px); }
+  img.img-loaded  { filter: blur(0px); }
   &:hover img { transform: scale(1.04); }
 
   &.left {
     margin-top: 14vh;
     img { height: 65vh; }
-
-    @media (max-width: 600px) {
-      margin-top: 0;
-      img { height: 100vw; }
-    }
+    @media (max-width: 600px) { margin-top: 0; img { height: 100vw; } }
   }
-
   &.right {
     img { height: 52vh; }
-
-    @media (max-width: 600px) {
-      img { height: 100vw; }
-    }
+    @media (max-width: 600px) { img { height: 100vw; } }
   }
 `;
 
+const blurUp = (e) => {
+  e.target.classList.remove('img-loading');
+  e.target.classList.add('img-loaded');
+};
+
 const StudioTeam = () => {
-  const bodyRef = useRef(null);
+  const bodyRef    = useRef(null);
   const bodyInView = useInView(bodyRef, { once: true, amount: 0.25 });
 
   return (
@@ -192,7 +133,7 @@ const StudioTeam = () => {
             animate={bodyInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
           >
-            <img src={img1} alt="Team at work" />
+            <img src={img1} alt="Team at work" className="img-loading" onLoad={blurUp} />
           </ImgWrap>
 
           <ImgWrap
@@ -201,7 +142,7 @@ const StudioTeam = () => {
             animate={bodyInView ? { opacity: 1, y: 0 } : {}}
             transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.22 }}
           >
-            <img src={img2} alt="Creative detail" />
+            <img src={img2} alt="Creative detail" className="img-loading" onLoad={blurUp} />
           </ImgWrap>
         </ImagesRow>
       </ContentBlock>

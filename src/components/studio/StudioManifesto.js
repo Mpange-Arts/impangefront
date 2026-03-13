@@ -11,131 +11,70 @@ const Wrapper = styled.section`
 
 const Headline = styled(motion.h2)`
   font-size: clamp(3rem, 13vw, 15rem);
-  font-weight: 500;
-  line-height: 0.92;
-  letter-spacing: -0.04em;
-  color: #111;
-  margin: 0 0 14vh;
-  text-transform: none;
-
-  span.indent {
-    display: block;
-    padding-left: 18%;
-  }
-
+  font-weight: 500; line-height: 0.92;
+  letter-spacing: -0.04em; color: #111;
+  margin: 0 0 14vh; text-transform: none;
+  span.indent { display: block; padding-left: 18%; }
   em {
     font-family: 'PP Editorial Old', serif;
-    font-style: italic;
-    font-weight: 400;
-    color: rgba(0,0,0,0.35);
+    font-style: italic; font-weight: 400; color: rgba(0,0,0,0.35);
   }
-
   @media (max-width: 768px) {
     margin: 0 0 8vh;
-
-    span.indent {
-      padding-left: 0;
-    }
+    span.indent { padding-left: 0; }
   }
 `;
 
 const Body = styled.div`
-  display: grid;
-  grid-template-columns: 200px 1fr 1fr;
-  gap: 6vw;
-  align-items: start;
-
-  @media (max-width: 900px) {
-    grid-template-columns: 1fr 1fr;
-    gap: 4vw;
-  }
-
-  @media (max-width: 600px) {
-    grid-template-columns: 1fr;
-    gap: 6vh;
-  }
+  display: grid; grid-template-columns: 200px 1fr 1fr;
+  gap: 6vw; align-items: start;
+  @media (max-width: 900px) { grid-template-columns: 1fr 1fr; gap: 4vw; }
+  @media (max-width: 600px) { grid-template-columns: 1fr; gap: 6vh; }
 `;
 
 const SideLabel = styled(motion.div)`
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding-top: 6px;
-
+  display: flex; align-items: flex-start; gap: 8px; padding-top: 6px;
   &::before {
-    content: '+';
-    font-size: 0.75rem;
-    color: rgba(0,0,0,0.35);
-    line-height: 1;
-    margin-top: 1px;
+    content: '+'; font-size: 0.75rem;
+    color: rgba(0,0,0,0.35); line-height: 1; margin-top: 1px;
   }
-
   span {
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(0,0,0,0.4);
-    font-weight: 300;
+    font-size: 0.68rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: rgba(0,0,0,0.4); font-weight: 300;
   }
-
-  @media (max-width: 900px) {
-    display: none;
-  }
+  @media (max-width: 900px) { display: none; }
 `;
 
 const BodyText = styled(motion.p)`
   font-size: clamp(1rem, 1.8vw, 1.5rem);
-  font-weight: 400;
-  line-height: 1.55;
-  letter-spacing: -0.01em;
-  color: #1a1a1a;
-  margin: 0;
-  text-transform: none;
-  max-width: 560px;
+  font-weight: 400; line-height: 1.55;
+  letter-spacing: -0.01em; color: #1a1a1a;
+  margin: 0; text-transform: none; max-width: 560px;
 `;
 
 const QuoteWrap = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
-  padding-top: 4px;
-  border-top: 1px solid rgba(0,0,0,0.12);
-  max-width: 300px;
-  align-self: flex-end;
-  justify-self: end;
-
+  display: flex; flex-direction: column; gap: 14px;
+  padding-top: 4px; border-top: 1px solid rgba(0,0,0,0.12);
+  max-width: 300px; align-self: flex-end; justify-self: end;
   @media (max-width: 600px) {
-    justify-self: start;
-    max-width: 100%;
-    border-top: 1px solid rgba(0,0,0,0.1);
-    padding-top: 3vh;
+    justify-self: start; max-width: 100%;
+    border-top: 1px solid rgba(0,0,0,0.1); padding-top: 3vh;
   }
 `;
 
 const QuoteIcon = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  img {
-    width: 18px;
-    height: 18px;
-    opacity: 0.25;
-  }
+  display: flex; align-items: center; gap: 8px;
+  img { width: 18px; height: 18px; opacity: 0.25; }
 `;
 
 const QuoteText = styled.p`
-  font-size: 0.8rem;
-  line-height: 1.7;
-  color: rgba(0,0,0,0.45);
-  font-weight: 300;
-  text-transform: none;
-  margin: 0;
-  letter-spacing: 0.01em;
+  font-size: 0.8rem; line-height: 1.7;
+  color: rgba(0,0,0,0.45); font-weight: 300;
+  text-transform: none; margin: 0; letter-spacing: 0.01em;
 `;
 
 const StudioManifesto = () => {
-  const bodyRef = useRef(null);
+  const bodyRef    = useRef(null);
   const bodyInView = useInView(bodyRef, { once: true, amount: 0.3 });
 
   return (

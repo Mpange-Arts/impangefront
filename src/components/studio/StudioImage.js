@@ -18,17 +18,11 @@ const StudioImage = () => {
   });
 
   const width = useTransform(scrollYProgress, [0, 1], ["40%", "100%"]);
-  const imgY  = useTransform(scrollYProgress, [0, 1], ["6%", "-6%"]);
+  const imgY  = useTransform(scrollYProgress, [0, 1], ["6%",  "-6%"]);
 
   return (
     <Wrapper ref={wrapperRef}>
-      <motion.div
-        style={{
-          width,
-          overflow: "hidden",
-          margin: "0 auto",
-        }}
-      >
+      <motion.div style={{ width, overflow: "hidden", margin: "0 auto" }}>
         <motion.img
           src={img}
           alt="Mpange Creative Studio"
@@ -39,6 +33,13 @@ const StudioImage = () => {
             objectFit: "cover",
             objectPosition: "center 35%",
             display: "block",
+          }}
+          onLoad={(e) => {
+            e.target.style.filter = "blur(0px)";
+            e.target.style.transition = "filter 0.9s ease";
+          }}
+          onError={(e) => {
+            e.target.style.filter = "blur(0px)";
           }}
         />
       </motion.div>

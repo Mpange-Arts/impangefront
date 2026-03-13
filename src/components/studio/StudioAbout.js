@@ -13,174 +13,105 @@ const Wrapper = styled.section`
 `;
 
 const ImageGrid = styled.div`
-  position: relative;
-  width: 100%;
-  height: 680px;
-
+  position: relative; width: 100%; height: 680px;
   @media (max-width: 768px) {
-    height: auto;
-    display: grid;
+    height: auto; display: grid;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 220px 180px;
-    gap: 8px;
-    padding: 0 4%;
+    gap: 8px; padding: 0 4%;
   }
 `;
 
 const ImgLeft = styled(motion.div)`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 28%;
-  height: 88%;
-  overflow: hidden;
-
+  position: absolute; top: 0; left: 0;
+  width: 28%; height: 88%; overflow: hidden;
   img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease;
   }
+  img.img-loading { filter: blur(10px); }
+  img.img-loaded  { filter: blur(0px); }
   &:hover img { transform: scale(1.04); }
-
   @media (max-width: 768px) {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    top: auto; left: auto;
-    grid-column: 1;
-    grid-row: 1 / 3;
+    position: relative; width: 100%; height: 100%;
+    top: auto; left: auto; grid-column: 1; grid-row: 1 / 3;
   }
 `;
 
 const ImgCenter = styled(motion.div)`
-  position: absolute;
-  top: 14%;
-  left: 38%;
-  width: 38%;
-  height: 72%;
-  overflow: hidden;
-
+  position: absolute; top: 14%; left: 38%;
+  width: 38%; height: 72%; overflow: hidden;
   img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 100%; height: 100%; object-fit: cover; display: block;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease;
   }
+  img.img-loading { filter: blur(10px); }
+  img.img-loaded  { filter: blur(0px); }
   &:hover img { transform: scale(1.04); }
-
   @media (max-width: 768px) {
-    position: relative;
-    top: auto; left: auto;
-    width: 100%;
-    height: 100%;
-    grid-column: 2;
-    grid-row: 1;
+    position: relative; top: auto; left: auto;
+    width: 100%; height: 100%; grid-column: 2; grid-row: 1;
   }
 `;
 
 const ImgRight = styled(motion.div)`
-  position: absolute;
-  top: 52%;
-  right: 0;
-  width: 20%;
-  height: 48%;
-  overflow: hidden;
-
+  position: absolute; top: 52%; right: 0;
+  width: 20%; height: 48%; overflow: hidden;
   img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center top;
-    display: block;
-    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+    width: 100%; height: 100%; object-fit: cover;
+    object-position: center top; display: block;
+    transition: transform 0.9s cubic-bezier(0.22, 1, 0.36, 1), filter 0.7s ease;
   }
+  img.img-loading { filter: blur(10px); }
+  img.img-loaded  { filter: blur(0px); }
   &:hover img { transform: scale(1.04); }
-
   @media (max-width: 768px) {
-    position: relative;
-    top: auto; right: auto;
-    width: 100%;
-    height: 100%;
-    grid-column: 2;
-    grid-row: 2;
+    position: relative; top: auto; right: auto;
+    width: 100%; height: 100%; grid-column: 2; grid-row: 2;
   }
 `;
 
 const StatementWrap = styled.div`
   padding: 10vh 6% 14vh;
-  display: grid;
-  grid-template-columns: 200px 1fr;
-  gap: 6vw;
-  align-items: start;
-
+  display: grid; grid-template-columns: 200px 1fr;
+  gap: 6vw; align-items: start;
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
-    gap: 4vh;
-    padding: 8vh 6% 10vh;
+    grid-template-columns: 1fr; gap: 4vh; padding: 8vh 6% 10vh;
   }
 `;
 
 const SideLabel = styled(motion.div)`
-  display: flex;
-  align-items: flex-start;
-  gap: 8px;
-  padding-top: 10px;
-
+  display: flex; align-items: flex-start; gap: 8px; padding-top: 10px;
   &::before {
-    content: '+';
-    font-size: 0.75rem;
-    color: rgba(0,0,0,0.35);
-    line-height: 1;
-    margin-top: 1px;
+    content: '+'; font-size: 0.75rem;
+    color: rgba(0,0,0,0.35); line-height: 1; margin-top: 1px;
   }
-
   span {
-    font-size: 0.68rem;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: rgba(0,0,0,0.4);
-    font-weight: 300;
+    font-size: 0.68rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: rgba(0,0,0,0.4); font-weight: 300;
   }
-
-  @media (max-width: 768px) {
-    display: none;
-  }
+  @media (max-width: 768px) { display: none; }
 `;
 
 const StatementRight = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 5vh;
+  display: flex; flex-direction: column; gap: 5vh;
 `;
 
 const Statement = styled(motion.h2)`
   font-size: clamp(1.5rem, 4vw, 4rem);
-  font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
-  color: #1a1a1a;
-  margin: 0;
-  text-transform: none;
-  max-width: 820px;
+  font-weight: 400; line-height: 1.2;
+  letter-spacing: -0.025em; color: #1a1a1a;
+  margin: 0; text-transform: none; max-width: 820px;
 `;
 
 const Industries = styled(motion.div)`
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+  display: flex; flex-direction: column; gap: 8px;
 `;
 
 const Industry = styled.span`
-  display: block;
-  font-size: 0.82rem;
-  font-weight: 300;
-  letter-spacing: 0.02em;
-  color: rgba(0,0,0,0.4);
-  text-transform: none;
-  line-height: 1.4;
+  display: block; font-size: 0.82rem; font-weight: 300;
+  letter-spacing: 0.02em; color: rgba(0,0,0,0.4);
+  text-transform: none; line-height: 1.4;
 `;
 
 const INDUSTRIES = [
@@ -191,9 +122,14 @@ const INDUSTRIES = [
   "Campaign & Marketing",
 ];
 
+const blurUp = (e) => {
+  e.target.classList.remove('img-loading');
+  e.target.classList.add('img-loaded');
+};
+
 const StudioAbout = () => {
-  const wrapperRef    = useRef(null);
-  const statementRef  = useRef(null);
+  const wrapperRef     = useRef(null);
+  const statementRef   = useRef(null);
   const statementInView = useInView(statementRef, { once: true, amount: 0.3 });
 
   const { scrollYProgress } = useScroll({
@@ -201,9 +137,9 @@ const StudioAbout = () => {
     offset: ["start end", "end start"],
   });
 
-  const yLeft   = useTransform(scrollYProgress, [0, 1], ["0px", "-40px"]);
-  const yCenter = useTransform(scrollYProgress, [0, 1], ["0px", "-24px"]);
-  const yRight  = useTransform(scrollYProgress, [0, 1], ["0px", "-60px"]);
+  const yLeft   = useTransform(scrollYProgress, [0, 1], ["0px",  "-40px"]);
+  const yCenter = useTransform(scrollYProgress, [0, 1], ["0px",  "-24px"]);
+  const yRight  = useTransform(scrollYProgress, [0, 1], ["0px",  "-60px"]);
 
   return (
     <Wrapper id="studio-about" ref={wrapperRef}>
@@ -215,7 +151,7 @@ const StudioAbout = () => {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1] }}
         >
-          <img src={img1} alt="Studio work" />
+          <img src={img1} alt="Studio work" className="img-loading" onLoad={blurUp} />
         </ImgLeft>
 
         <ImgCenter
@@ -225,7 +161,7 @@ const StudioAbout = () => {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
         >
-          <img src={img2} alt="Studio session" />
+          <img src={img2} alt="Studio session" className="img-loading" onLoad={blurUp} />
         </ImgCenter>
 
         <ImgRight
@@ -235,7 +171,7 @@ const StudioAbout = () => {
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 1, ease: [0.22, 1, 0.36, 1], delay: 0.28 }}
         >
-          <img src={img3} alt="Creative detail" />
+          <img src={img3} alt="Creative detail" className="img-loading" onLoad={blurUp} />
         </ImgRight>
       </ImageGrid>
 

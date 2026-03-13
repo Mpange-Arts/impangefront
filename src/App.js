@@ -6,22 +6,23 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { gsap } from "gsap";
 import "./App.css";
 
-import Loader from "./components/Loader";
-import HomeContent from "./pages/HomeContent";
-import Work from "./pages/Work";
-import Studio from "./pages/Studio";
-import News from "./pages/News";
-import Contact from "./pages/Contact";
+// ── API Providers (new) ───────────────────────────────────
+import { SiteContentProvider } from "./context/SiteContentContext";
+import { SocketProvider }       from "./context/SocketContext";
+
+// ── Your existing components (unchanged) ─────────────────
+import Loader        from "./components/Loader";
+import HomeContent   from "./pages/HomeContent";
+import Work          from "./pages/Work";
+import Studio        from "./pages/Studio";
+import News          from "./pages/News";
+import Contact       from "./pages/Contact";
 import PrivacyPolicy from './pages/PrivacyPolicy';
-import TermsOfUse from './pages/TermsOfUse';
-
-
-
+import TermsOfUse    from './pages/TermsOfUse';
+import BlogPost from "./pages/BlogPost";
 
 gsap.registerPlugin(ScrollTrigger);
 
-// Only animate on EXIT (leaving a page) and ENTER from navigation
-// Never on initial mount — loader handles that
 const PageTransition = ({ children }) => (
   <motion.div
     initial={{ opacity: 1 }}
@@ -45,7 +46,9 @@ const AnimatedRoutes = () => {
         <Route path="/news"    element={<PageTransition><News /></PageTransition>} />
         <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
         <Route path="/privacy" element={<PrivacyPolicy />} />
-        <Route path="/terms" element={<TermsOfUse />} />
+        <Route path="/terms"   element={<TermsOfUse />} />
+       <Route path="/news/:slug" element={<PageTransition><BlogPost /></PageTransition>} />
+
       </Routes>
     </AnimatePresence>
   );
@@ -53,12 +56,17 @@ const AnimatedRoutes = () => {
 
 function App() {
   return (
-    <ReactLenis root options={{ lerp: 0.1, duration: 1.5, smoothTouch: false }}>
-      <Router>
-        <Loader />
-        <AnimatedRoutes />
-      </Router>
-    </ReactLenis>
+    // SiteContentProvider fetches all section data once on load
+    <SiteContentProvider>
+      <SocketProvider>
+        <ReactLenis root options={{ lerp: 0.1, duration: 1.5, smoothTouch: false }}>
+          <Router>
+            <Loader />          {/* ← your existing loader, untouched */}
+            <AnimatedRoutes />
+          </Router>
+        </ReactLenis>
+      </SocketProvider>
+    </SiteContentProvider>
   );
 }
 
