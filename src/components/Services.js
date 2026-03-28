@@ -1,86 +1,30 @@
-import React, { useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { Link } from 'react-router-dom';
 
-// --- Data ---
-const SERVICES = [
-  {
-    id: '01',
-    title: 'Cinema\n& Film',
-    tag: 'Motion Picture',
-    description: 'From concept to final cut — cinematic stories that move audiences.',
-    link: '/work',
-    image: 'https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&q=80&w=2400',
-  },
-  {
-    id: '02',
-    title: 'Photo-\ngraphy',
-    tag: 'Visual Arts',
-    description: 'Still moments with lasting impact. Editorial and commercial work.',
-    link: '/work',
-    image: 'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?auto=format&fit=crop&q=80&w=2400',
-  },
-  {
-    id: '03',
-    title: 'Web\nDev',
-    tag: 'Digital Craft',
-    description: 'Performant, beautiful digital experiences built with precision.',
-    link: '/work',
-    image: 'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&q=80&w=2400',
-  },
-  {
-    id: '04',
-    title: 'Mobile\nApps',
-    tag: 'Digital Product',
-    description: 'Native applications designed for real people. Clean. Fast. Alive.',
-    link: '/work',
-    image: 'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=2400',
-  },
-  {
-    id: '05',
-    title: 'Motion\nGraphics',
-    tag: 'Animation',
-    description: 'Dynamic visuals that breathe life into brands. From logo reveals to full explainer animations.',
-    link: '/work',
-    image: 'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2400',
-  },
-  {
-    id: '06',
-    title: 'Graphic\nDesign',
-    tag: 'Visual Identity',
-    description: 'Logos, brand systems, and print collateral crafted with intention and precision.',
-    link: '/work',
-    image: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=2400',
-  },
-  {
-    id: '07',
-    title: 'Digital\nMarketing',
-    tag: 'Growth',
-    description: 'Strategy-led campaigns that connect with real audiences and drive measurable results.',
-    link: '/work',
-    image: 'https://images.unsplash.com/photo-1611926653458-09294b3142bf?auto=format&fit=crop&q=80&w=2400',
-  },
-  {
-    id: '08',
-    title: 'Consul-\ntance',
-    tag: 'Strategy',
-    description: 'Senior-level creative and technology guidance to help your business move with clarity.',
-    link: '/work',
-    image: 'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=2400',
-  },
+// ── Fallback images if CMS service has no imageUrl ────────────
+const FALLBACK_IMAGES = [
+  'https://images.unsplash.com/photo-1478720568477-152d9b164e26?auto=format&fit=crop&q=80&w=2400',
+  'https://images.unsplash.com/photo-1554048612-b6a482bc67e5?auto=format&fit=crop&q=80&w=2400',
+  'https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?auto=format&fit=crop&q=80&w=2400',
+  'https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?auto=format&fit=crop&q=80&w=2400',
+  'https://images.unsplash.com/photo-1550745165-9bc0b252726f?auto=format&fit=crop&q=80&w=2400',
+  'https://images.unsplash.com/photo-1626785774573-4b799315345d?auto=format&fit=crop&q=80&w=2400',
+  'https://images.unsplash.com/photo-1611926653458-09294b3142bf?auto=format&fit=crop&q=80&w=2400',
+  'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&q=80&w=2400',
 ];
 
-// --- Styled Components ---
+// ── Styled Components ─────────────────────────────────────────
 
 const Wrapper = styled.section`
   font-family: 'PP Neue Montreal', 'Helvetica Neue', sans-serif;
   background: #000;
 `;
 
+// Height is now set via inline style prop (dynamic based on service count)
 const ScrollContainer = styled.div`
   position: relative;
-  height: ${SERVICES.length * 100}vh;
 `;
 
 const StickyStage = styled.div`
@@ -112,7 +56,6 @@ const Scrim = styled(motion.div)`
   z-index: 1;
 `;
 
-/* ← increased top padding so 01 — Services clears the navbar */
 const ContentLayer = styled.div`
   position: absolute;
   inset: 0;
@@ -128,7 +71,6 @@ const TopBar = styled.div`
   align-items: flex-start;
 `;
 
-/* ← bigger font, pinned to top of its row, nudged down slightly */
 const ServiceNumber = styled(motion.span)`
   font-size: 1rem;
   letter-spacing: 0.18em;
@@ -204,8 +146,7 @@ const WorkLink = styled(Link)`
     width: 32px;
     height: 1px;
     background: rgba(255, 255, 255, 0.5);
-    transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1),
-      background 0.4s ease;
+    transition: width 0.4s cubic-bezier(0.22, 1, 0.36, 1), background 0.4s ease;
   }
 
   span {
@@ -280,22 +221,40 @@ const CounterTotal = styled.span`
   letter-spacing: 0.08em;
 `;
 
-// --- CounterItem ---
+// Skeleton stage shown while loading
+const SkeletonStage = styled.div`
+  height: 100vh;
+  width: 100%;
+  background: #111;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SkeletonText = styled.div`
+  color: rgba(255, 255, 255, 0.2);
+  font-family: 'PP Neue Montreal', sans-serif;
+  font-size: 0.8rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+`;
+
+// ── Counter Item ──────────────────────────────────────────────
+
 const CounterItem = ({ index, total, scrollYProgress }) => {
-  const start = index / total;
-  const end = (index + 1) / total;
+  const start   = index / total;
+  const end     = (index + 1) / total;
   const fadeDur = Math.min(0.08, (end - start) / 4);
 
   const opacity = useTransform(
     scrollYProgress,
     [start, start + fadeDur, end - fadeDur, end],
-    [0, 1, 1, 0]
+    [0, 1, 1, 0],
   );
-
   const y = useTransform(
     scrollYProgress,
     [start, start + fadeDur, end - fadeDur, end],
-    ['100%', '0%', '0%', '-100%']
+    ['100%', '0%', '0%', '-100%'],
   );
 
   return (
@@ -318,41 +277,26 @@ const CounterItem = ({ index, total, scrollYProgress }) => {
   );
 };
 
-// --- Service Panel ---
+// ── Service Panel ─────────────────────────────────────────────
+
 const ServicePanel = ({ service, index, totalCards, scrollYProgress }) => {
-  const start = index / totalCards;
-  const end = (index + 1) / totalCards;
-  const fadeDur = Math.min(0.08, (end - start) / 4);
-  const innerFade = Math.min(fadeDur + 0.02, (end - start) / 3);
+  const start      = index / totalCards;
+  const end        = (index + 1) / totalCards;
+  const fadeDur    = Math.min(0.08, (end - start) / 4);
+  const innerFade  = Math.min(fadeDur + 0.02, (end - start) / 3);
 
   const opacity = useTransform(
     scrollYProgress,
     [start, start + fadeDur, end - fadeDur, end],
-    [0, 1, 1, 0]
+    [0, 1, 1, 0],
   );
-
-  const imageScale = useTransform(
-    scrollYProgress,
-    [start, end],
-    [1.06, 1.0]
-  );
-
-  const titleY = useTransform(
-    scrollYProgress,
-    [start, end],
-    ['18px', '-18px']
-  );
-
-  const descY = useTransform(
-    scrollYProgress,
-    [start, end],
-    ['12px', '-12px']
-  );
-
+  const imageScale = useTransform(scrollYProgress, [start, end], [1.06, 1.0]);
+  const titleY     = useTransform(scrollYProgress, [start, end], ['18px', '-18px']);
+  const descY      = useTransform(scrollYProgress, [start, end], ['12px', '-12px']);
   const elementsOpacity = useTransform(
     scrollYProgress,
     [start, start + innerFade, end - innerFade, end],
-    [0, 1, 1, 0]
+    [0, 1, 1, 0],
   );
 
   return (
@@ -361,7 +305,7 @@ const ServicePanel = ({ service, index, totalCards, scrollYProgress }) => {
         position: 'absolute',
         inset: 0,
         opacity,
-        pointerEvents: opacity === 0 ? 'none' : 'auto',
+        pointerEvents: 'auto',
       }}
     >
       <FullImage
@@ -376,11 +320,13 @@ const ServicePanel = ({ service, index, totalCards, scrollYProgress }) => {
       <ContentLayer>
         <TopBar>
           <ServiceNumber style={{ opacity: elementsOpacity }}>
-            {service.id} — Services
+            {String(index + 1).padStart(2, '0')} — Services
           </ServiceNumber>
-          <TagPill style={{ opacity: elementsOpacity }}>
-            {service.tag}
-          </TagPill>
+          {service.tag && (
+            <TagPill style={{ opacity: elementsOpacity }}>
+              {service.tag}
+            </TagPill>
+          )}
         </TopBar>
 
         <BottomBar>
@@ -392,7 +338,7 @@ const ServicePanel = ({ service, index, totalCards, scrollYProgress }) => {
             <Description style={{ y: descY, opacity: elementsOpacity }}>
               {service.description}
             </Description>
-            <WorkLink to={service.link}>
+            <WorkLink to={service.link || '/work'}>
               <div className="line" />
               <span>See related work</span>
             </WorkLink>
@@ -417,47 +363,82 @@ const ServicePanel = ({ service, index, totalCards, scrollYProgress }) => {
   );
 };
 
-// --- Main Component ---
+// ── Main Component ────────────────────────────────────────────
+
 const Services = () => {
-  const containerRef = useRef(null);
+  const containerRef             = useRef(null);
+  const [services, setServices]  = useState([]);
+  const [loading, setLoading]    = useState(true);
+
+  useEffect(() => {
+    fetch(`${process.env.REACT_APP_API_URL}/api/content/services`)
+      .then((r) => r.json())
+      .then((res) => {
+        const raw = (res.data?.services || []);
+        const mapped = raw.map((s, i) => ({
+          id:          String(i + 1).padStart(2, '0'),
+          title:       s.title       || '',
+          tag:         s.tag         || '',
+          description: s.description || '',
+          link:        s.link        || '/work',
+          // Use CMS imageUrl if it exists, otherwise fall back to a placeholder
+          image:       s.imageUrl || FALLBACK_IMAGES[i % FALLBACK_IMAGES.length],
+        }));
+        setServices(mapped);
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ['start start', 'end end'],
   });
 
+  if (loading) {
+    return (
+      <SkeletonStage>
+        <SkeletonText>Loading services...</SkeletonText>
+      </SkeletonStage>
+    );
+  }
+
+  if (services.length === 0) return null;
+
   return (
     <Wrapper>
-      <ScrollContainer ref={containerRef}>
+      {/* Height is dynamic based on how many services the CMS returns */}
+      <ScrollContainer
+        ref={containerRef}
+        style={{ height: `${services.length * 100}vh` }}
+      >
         <StickyStage>
-
-          {SERVICES.map((service, index) => (
+          {services.map((service, index) => (
             <ServicePanel
               key={service.id}
               service={service}
               index={index}
-              totalCards={SERVICES.length}
+              totalCards={services.length}
               scrollYProgress={scrollYProgress}
             />
           ))}
 
           <Counter>
             <CounterCurrent>
-              {SERVICES.map((s, i) => (
+              {services.map((s, i) => (
                 <CounterItem
                   key={s.id}
                   index={i}
-                  total={SERVICES.length}
+                  total={services.length}
                   scrollYProgress={scrollYProgress}
                 />
               ))}
             </CounterCurrent>
             <CounterDivider />
             <CounterTotal>
-              {String(SERVICES.length).padStart(2, '0')}
+              {String(services.length).padStart(2, '0')}
             </CounterTotal>
           </Counter>
-
         </StickyStage>
       </ScrollContainer>
     </Wrapper>
